@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAtomValue } from 'jotai';
 import { useQuery } from '@tanstack/react-query';
@@ -14,7 +14,7 @@ export default function AdminDashboard() {
   const router = useRouter();
   const user = useAtomValue(userAtom);
 
-  const { data: postsData, refetch } = useQuery({
+  const { data: postsData } = useQuery({
     queryKey: ['posts', 'admin'],
     queryFn: () => blogApi.getPosts(1, 100, true),
     enabled: !!user,
@@ -39,13 +39,27 @@ export default function AdminDashboard() {
     }
   };
 
+  // Optimize filtering with useMemo to avoid recalculating on every render
+  const { publishedPosts, draftPosts } = useMemo(() => {
+    const posts: BlogPost[] = postsData?.posts || [];
+    const published: BlogPost[] = [];
+    const drafts: BlogPost[] = [];
+    
+    // Single pass through posts array
+    posts.forEach((post) => {
+      if (post.published) {
+        published.push(post);
+      } else {
+        drafts.push(post);
+      }
+    });
+    
+    return { publishedPosts: published, draftPosts: drafts };
+  }, [postsData?.posts]);
+
   if (!user) {
     return null;
   }
-
-  const posts: BlogPost[] = postsData?.posts || [];
-  const publishedPosts = posts.filter((p) => p.published);
-  const draftPosts = posts.filter((p) => !p.published);
 
   return (
     <div className={styles.container}>

@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import Link from 'next/link';
-import { useAtomValue } from 'jotai';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { userAtom } from '@/store/auth';
-import { blogApi, CreateBlogPostDto, UpdateBlogPostDto } from '@/lib/api';
-import { Button } from '@/components/common/Button';
-import { TextField } from '@/components/common/TextField';
-import { TextArea } from '@/components/common/TextArea';
-import { RichTextEditor } from '@/components/RichTextEditor';
-import styles from './page.module.scss';
+import { useEffect, useState } from "react";
+import { useRouter, useParams } from "next/navigation";
+import Link from "next/link";
+import { useAtomValue } from "jotai";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { userAtom } from "@/store/auth";
+import { blogApi, CreateBlogPostDto, UpdateBlogPostDto } from "@/lib/api";
+import { Button } from "@/components/common/Button";
+import { TextField } from "@/components/common/TextField";
+import { TextArea } from "@/components/common/TextArea";
+import { RichTextEditor } from "@/components/RichTextEditor";
+import styles from "./page.module.scss";
 
 export default function EditPostPage() {
   const router = useRouter();
@@ -19,25 +19,25 @@ export default function EditPostPage() {
   const user = useAtomValue(userAtom);
   const queryClient = useQueryClient();
   const id = params.id as string;
-  const isNew = id === 'new';
+  const isNew = id === "new";
 
   const [formData, setFormData] = useState<CreateBlogPostDto>({
-    title: '',
-    content: '',
-    summary: '',
-    imageUrl: '',
+    title: "",
+    content: "",
+    summary: "",
+    imageUrl: "",
     published: false,
   });
 
   const { data: post, isLoading } = useQuery({
-    queryKey: ['post', id],
-    queryFn: () => blogApi.getPost(id),
+    queryKey: ["post", "admin", id],
+    queryFn: () => blogApi.getPostForAdmin(id),
     enabled: !isNew && !!id,
   });
 
   useEffect(() => {
     if (!user) {
-      router.push('/admin/login');
+      router.push("/admin/login");
     }
   }, [user, router]);
 
@@ -61,8 +61,8 @@ export default function EditPostPage() {
       return blogApi.updatePost(id, data);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['posts'] });
-      router.push('/admin/dashboard');
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      router.push("/admin/dashboard");
     },
   });
 
@@ -90,7 +90,7 @@ export default function EditPostPage() {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1 className={styles.title}>{isNew ? 'New Post' : 'Edit Post'}</h1>
+        <h1 className={styles.title}>{isNew ? "New Post" : "Edit Post"}</h1>
         <Link href="/admin/dashboard" className={styles.backLink}>
           ← Back to Dashboard
         </Link>
@@ -101,7 +101,9 @@ export default function EditPostPage() {
           <TextField
             label="Title"
             value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
             required
             fullWidth
           />
@@ -109,14 +111,18 @@ export default function EditPostPage() {
           <TextField
             label="Image URL"
             value={formData.imageUrl}
-            onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, imageUrl: e.target.value })
+            }
             fullWidth
           />
 
           <TextArea
             label="Summary"
             value={formData.summary}
-            onChange={(e) => setFormData({ ...formData, summary: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, summary: e.target.value })
+            }
             placeholder="Brief summary of the post (3-4 lines)"
             rows={4}
             fullWidth
@@ -144,7 +150,7 @@ export default function EditPostPage() {
               onClick={handlePublish}
               disabled={saveMutation.isPending}
             >
-              {saveMutation.isPending ? 'Publishing...' : 'Publish'}
+              {saveMutation.isPending ? "Publishing..." : "Publish"}
             </Button>
           </div>
         </form>

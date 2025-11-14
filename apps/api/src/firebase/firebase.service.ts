@@ -3,13 +3,14 @@ import * as admin from 'firebase-admin';
 
 @Injectable()
 export class FirebaseService implements OnModuleInit {
+  private db: admin.firestore.Firestore;
   private storage: admin.storage.Storage;
   private bucket: ReturnType<admin.storage.Storage['bucket']>;
 
   onModuleInit() {
     if (!admin.apps.length) {
       let serviceAccount = null;
-      
+
       if (process.env.FIREBASE_SERVICE_ACCOUNT) {
         try {
           serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
@@ -33,14 +34,24 @@ export class FirebaseService implements OnModuleInit {
       }
     }
 
+    // Initialize Firestore for auth (users, refresh tokens)
+    this.db = admin.firestore();
+
+    // Initialize Storage for image uploads
     this.storage = admin.storage();
     const bucketName = process.env.FIREBASE_STORAGE_BUCKET;
-    
+
     if (!bucketName) {
-      console.warn('FIREBASE_STORAGE_BUCKET not set. Image uploads may not work.');
+      console.warn(
+        'FIREBASE_STORAGE_BUCKET not set. Image uploads may not work.',
+      );
     }
-    
+
     this.bucket = this.storage.bucket(bucketName);
+  }
+
+  getFirestore(): admin.firestore.Firestore {
+    return this.db;
   }
 
   getStorage(): admin.storage.Storage {
@@ -92,6 +103,12 @@ export class FirebaseService implements OnModuleInit {
   }
 
   async deleteImage(path: string): Promise<void> {
+    if (!this.bucket) {
+      throw new Error('Firebase Storage bucket not initialized');
+    }
+    if (!path || path.trim().length === 0) {
+      throw new Error('Invalid file path provided');
+    }
     const file = this.bucket.file(path);
     await file.delete();
   }

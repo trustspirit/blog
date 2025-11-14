@@ -19,6 +19,16 @@ export interface BlogPost {
   updatedAt: Date;
 }
 
+export interface CreatePostDto {
+  title: string;
+  content: string;
+  summary: string;
+  imageUrl?: string;
+  published?: boolean;
+}
+
+export interface UpdatePostDto extends Partial<CreatePostDto> {}
+
 @Injectable()
 export class PostsService {
   constructor(@InjectModel(Post.name) private postModel: Model<PostDocument>) {}
@@ -48,10 +58,14 @@ export class PostsService {
     ]);
 
     return {
-      posts: posts.map((post) => ({
-        id: post._id.toString(),
-        ...post,
-      })) as BlogPost[],
+      posts: posts.map((post) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { _id: _unusedId, __v: _unusedV, ...rest } = post;
+        return {
+          id: post._id.toString(),
+          ...rest,
+        };
+      }) as BlogPost[],
       page: pageNum,
       limit: limitNum,
       hasMore: total > skip + posts.length,
@@ -73,9 +87,11 @@ export class PostsService {
       throw new NotFoundException('Post not found');
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { _id: _unusedId, __v: _unusedV, ...rest } = post;
     return {
       id: post._id.toString(),
-      ...post,
+      ...rest,
     };
   }
 
@@ -90,36 +106,35 @@ export class PostsService {
       throw new NotFoundException('Post not found');
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { _id: _unusedId, __v: _unusedV, ...rest } = post;
     return {
       id: post._id.toString(),
-      ...post,
+      ...rest,
     };
   }
 
-  async create(postData: Partial<BlogPost>, userId: string) {
+  async create(postData: CreatePostDto, userId: string) {
     const newPost = new this.postModel({
       title: postData.title,
       content: postData.content,
       summary: postData.summary,
       imageUrl: postData.imageUrl || '',
-      published: postData.published || false,
+      published: postData.published ?? false,
       authorId: userId,
     });
 
     const savedPost = await newPost.save();
+    const postObj = savedPost.toObject();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { _id: _unusedId, __v: _unusedV, ...rest } = postObj;
     return {
       id: savedPost._id.toString(),
-      title: savedPost.title,
-      content: savedPost.content,
-      summary: savedPost.summary,
-      imageUrl: savedPost.imageUrl,
-      published: savedPost.published,
-      createdAt: savedPost.createdAt,
-      updatedAt: savedPost.updatedAt,
+      ...rest,
     };
   }
 
-  async update(id: string, postData: Partial<BlogPost>, userId: string) {
+  async update(id: string, postData: UpdatePostDto, userId: string) {
     if (!isValidObjectId(id)) {
       throw new BadRequestException('Invalid post ID format');
     }
@@ -135,22 +150,19 @@ export class PostsService {
     }
 
     // Update only provided fields
-    Object.keys(postData).forEach((key) => {
-      if (postData[key] !== undefined) {
-        post[key] = postData[key];
-      }
-    });
+    if (postData.title !== undefined) post.title = postData.title;
+    if (postData.content !== undefined) post.content = postData.content;
+    if (postData.summary !== undefined) post.summary = postData.summary;
+    if (postData.imageUrl !== undefined) post.imageUrl = postData.imageUrl;
+    if (postData.published !== undefined) post.published = postData.published;
 
     const updatedPost = await post.save();
+    const postObj = updatedPost.toObject();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { _id: _unusedId, __v: _unusedV, ...rest } = postObj;
     return {
       id: updatedPost._id.toString(),
-      title: updatedPost.title,
-      content: updatedPost.content,
-      summary: updatedPost.summary,
-      imageUrl: updatedPost.imageUrl,
-      published: updatedPost.published,
-      createdAt: updatedPost.createdAt,
-      updatedAt: updatedPost.updatedAt,
+      ...rest,
     };
   }
 

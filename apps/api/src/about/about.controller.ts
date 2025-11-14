@@ -1,4 +1,12 @@
-import { Controller, Get, Put, Body, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Put,
+  Body,
+  UseGuards,
+  Request,
+  BadRequestException,
+} from '@nestjs/common';
 import { AboutService } from './about.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
@@ -14,6 +22,9 @@ export class AboutController {
   @Put()
   @UseGuards(JwtAuthGuard)
   async updateAbout(@Body() body: { content: string }, @Request() req) {
+    if (!body.content || typeof body.content !== 'string') {
+      throw new BadRequestException('Content is required and must be a string');
+    }
     return this.aboutService.updateAbout(body.content);
   }
 }

@@ -10,7 +10,7 @@ import {
   UseGuards,
   Request,
 } from '@nestjs/common';
-import { PostsService } from './posts.service';
+import { PostsService, CreatePostDto, UpdatePostDto } from './posts.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('posts')
@@ -29,6 +29,12 @@ export class PostsController {
     return this.postsService.findAll(pageNum, limitNum, includeDraftsBool);
   }
 
+  @Get('admin/:id')
+  @UseGuards(JwtAuthGuard)
+  async findOneForAdmin(@Param('id') id: string) {
+    return this.postsService.findOneForAdmin(id);
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.postsService.findOne(id);
@@ -36,13 +42,17 @@ export class PostsController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  async create(@Body() postData: any, @Request() req) {
+  async create(@Body() postData: CreatePostDto, @Request() req) {
     return this.postsService.create(postData, req.user.userId);
   }
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
-  async update(@Param('id') id: string, @Body() postData: any, @Request() req) {
+  async update(
+    @Param('id') id: string,
+    @Body() postData: UpdatePostDto,
+    @Request() req,
+  ) {
     return this.postsService.update(id, postData, req.user.userId);
   }
 

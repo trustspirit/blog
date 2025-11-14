@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useMemo, useEffect, useRef } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -10,7 +10,6 @@ import styles from './page.module.scss';
 
 export default function PostsPage() {
   const observerTarget = useRef<HTMLDivElement>(null);
-  const [posts, setPosts] = useState<BlogPost[]>([]);
 
   const {
     data,
@@ -30,12 +29,11 @@ export default function PostsPage() {
     initialPageParam: 1,
   });
 
-  useEffect(() => {
-    if (data?.pages) {
-      const allPosts = data.pages.flatMap((page) => page.posts || []);
-      setPosts(allPosts);
-    }
-  }, [data]);
+  // Use useMemo to avoid recalculating on every render
+  const posts = useMemo(() => {
+    if (!data?.pages) return [];
+    return data.pages.flatMap((page) => page.posts || []);
+  }, [data?.pages]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
