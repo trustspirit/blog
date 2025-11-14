@@ -1,0 +1,92 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+.header {
+  padding: 24px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.nav {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.navLink {
+  font-size: 16px;
+  color: #333;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #000;
+  }
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 48px;
+  gap: 48px;
+  height: calc(100vh - 100px);
+  overflow: hidden;
+}
+
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-height: 0;
+}
+
+.heroTitle {
+  font-size: 32px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.loading,
+.empty {
+  text-align: center;
+  padding: 48px;
+  color: #666;
+  font-size: 18px;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  padding-top: 24px;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 16px 24px;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .main {
+    padding: 24px;
+    gap: 32px;
+  }
+
+  .heroTitle {
+    font-size: 24px;
+  }
+}

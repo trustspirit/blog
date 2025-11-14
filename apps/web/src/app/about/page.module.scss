@@ -1,0 +1,109 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  padding: 24px 48px;
+  border-bottom: 1px solid #eee;
+}
+
+.backLink {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: #666;
+  font-size: 14px;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #000;
+  }
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.main {
+  flex: 1;
+  padding: 48px;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.content {
+  font-size: 18px;
+  line-height: 1.8;
+  color: #333;
+
+  :global(h1),
+  :global(h2),
+  :global(h3) {
+    margin-top: 32px;
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+
+  :global(h1) {
+    font-size: 32px;
+  }
+
+  :global(h2) {
+    font-size: 28px;
+  }
+
+  :global(h3) {
+    font-size: 24px;
+  }
+
+  :global(p) {
+    margin-bottom: 16px;
+  }
+
+  :global(ul),
+  :global(ol) {
+    margin-bottom: 16px;
+    padding-left: 24px;
+  }
+
+  :global(li) {
+    margin-bottom: 8px;
+  }
+
+  :global(a) {
+    color: #000;
+    text-decoration: underline;
+  }
+
+  :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 24px 0;
+  }
+}
+
+.loading {
+  text-align: center;
+  padding: 48px;
+  color: #666;
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 16px 24px;
+  }
+
+  .main {
+    padding: 24px;
+  }
+
+  .content {
+    font-size: 16px;
+  }
+}

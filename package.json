@@ -1,0 +1,14 @@
+{
+  "name": "blog-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "dev:api": "pnpm --filter api start:dev",
+    "build": "pnpm --filter web build && pnpm --filter api build",
+    "lint": "pnpm --filter web lint && pnpm --filter api lint"
+  },
+  "devDependencies": {
+    "pnpm": "^8.0.0"
+  }
+}
