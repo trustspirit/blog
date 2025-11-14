@@ -23,8 +23,8 @@ export class PostsController {
     @Query('limit') limit?: string,
     @Query('includeDrafts') includeDrafts?: string,
   ) {
-    const pageNum = page ? parseInt(page, 10) : 1;
-    const limitNum = limit ? parseInt(limit, 10) : 10;
+    const pageNum = page ? Math.max(1, parseInt(page, 10)) || 1 : 1;
+    const limitNum = limit ? Math.max(1, parseInt(limit, 10)) || 10 : 10;
     const includeDraftsBool = includeDrafts === 'true';
     return this.postsService.findAll(pageNum, limitNum, includeDraftsBool);
   }

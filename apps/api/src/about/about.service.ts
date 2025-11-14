@@ -1,41 +1,46 @@
 import { Injectable } from '@nestjs/common';
-import { FirebaseService } from '../firebase/firebase.service';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { About, AboutDocument } from './schemas/about.schema';
 
 @Injectable()
 export class AboutService {
-  constructor(private firebaseService: FirebaseService) {}
+  constructor(
+    @InjectModel(About.name) private aboutModel: Model<AboutDocument>,
+  ) {}
 
   async getAbout() {
-    const db = this.firebaseService.getFirestore();
-    const aboutDoc = await db.collection('about').doc('main').get();
+    let about = await this.aboutModel.findOne({ slug: 'main' }).exec();
 
-    if (!aboutDoc.exists) {
-      return {
-        id: 'main',
+    if (!about) {
+      // Create default about if it doesn't exist
+      about = new this.aboutModel({
+        slug: 'main',
         content: '<p>No information available.</p>',
-        updatedAt: new Date(),
-      };
+      });
+      await about.save();
     }
 
     return {
-      id: aboutDoc.id,
-      ...aboutDoc.data(),
+      id: about._id.toString(),
+      content: about.content,
+      updatedAt: about.updatedAt,
     };
   }
 
   async updateAbout(content: string) {
-    const db = this.firebaseService.getFirestore();
-    const now = new Date();
-
-    await db.collection('about').doc('main').set({
-      content,
-      updatedAt: now,
-    }, { merge: true });
+    const about = await this.aboutModel
+      .findOneAndUpdate(
+        { slug: 'main' },
+        { content },
+        { upsert: true, new: true },
+      )
+      .exec();
 
     return {
-      id: 'main',
-      content,
-      updatedAt: now,
+      id: about._id.toString(),
+      content: about.content,
+      updatedAt: about.updatedAt,
     };
   }
 }

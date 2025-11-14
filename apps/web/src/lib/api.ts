@@ -117,6 +117,16 @@ export const blogApi = {
     const response = await api.put('/about', { content });
     return response.data;
   },
+
+  uploadImage: async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append('image', file);
+    
+    // Axios automatically sets Content-Type with boundary for FormData
+    // Do not manually set Content-Type header
+    const response = await api.post('/uploads/image', formData);
+    return response.data.url;
+  },
 };
 
 export const authApi = {

@@ -5,18 +5,28 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { format } from 'date-fns';
+import { useEffect, useState } from 'react';
 import { blogApi } from '@/lib/api';
+import { embedYouTubeVideos } from '@/lib/youtube';
 import styles from './page.module.scss';
 
 export default function PostPage() {
   const params = useParams();
   const id = params.id as string;
+  const [processedContent, setProcessedContent] = useState<string>('');
 
   const { data: post, isLoading } = useQuery({
     queryKey: ['post', id],
     queryFn: () => blogApi.getPost(id),
     enabled: !!id,
   });
+
+  useEffect(() => {
+    if (post?.content) {
+      const contentWithVideos = embedYouTubeVideos(post.content);
+      setProcessedContent(contentWithVideos);
+    }
+  }, [post?.content]);
 
   if (isLoading) {
     return (
@@ -62,7 +72,7 @@ export default function PostPage() {
           </p>
           <div
             className={styles.body}
-            dangerouslySetInnerHTML={{ __html: post.content }}
+            dangerouslySetInnerHTML={{ __html: processedContent || post.content }}
           />
         </div>
       </article>
