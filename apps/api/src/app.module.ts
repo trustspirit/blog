@@ -5,6 +5,7 @@ import { AboutModule } from './about/about.module'
 import { FirebaseModule } from './firebase/firebase.module'
 import { MongoDBModule } from './mongodb/mongodb.module'
 import { UploadsModule } from './uploads/uploads.module'
+import { HealthModule } from './health/health.module'
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { UploadsModule } from './uploads/uploads.module'
     PostsModule,
     AboutModule,
     UploadsModule,
+    HealthModule,
   ],
 })
 export class AppModule {}

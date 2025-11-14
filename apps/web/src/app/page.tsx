@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { blogApi } from '@/lib/api'
 import { BlogCarousel } from '@/components/BlogCarousel'
 import { Button } from '@/components/common/Button'
+import { ThemeToggle } from '@/components/ThemeToggle'
 import styles from './page.module.scss'
 
 export default function Home() {
@@ -29,6 +30,7 @@ export default function Home() {
           <Link href="/admin/login" className={styles.navLink}>
             Admin
           </Link>
+          <ThemeToggle />
         </nav>
       </header>
 
