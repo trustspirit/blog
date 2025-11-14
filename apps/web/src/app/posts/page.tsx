@@ -1,68 +1,63 @@
-'use client';
+'use client'
 
-import { useMemo, useEffect, useRef } from 'react';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import Image from 'next/image';
-import Link from 'next/link';
-import { format } from 'date-fns';
-import { blogApi, BlogPost } from '@/lib/api';
-import styles from './page.module.scss';
+import { useMemo, useEffect, useRef } from 'react'
+import { useInfiniteQuery } from '@tanstack/react-query'
+import Image from 'next/image'
+import Link from 'next/link'
+import { format } from 'date-fns'
+import { blogApi, BlogPost } from '@/lib/api'
+import styles from './page.module.scss'
 
 export default function PostsPage() {
-  const observerTarget = useRef<HTMLDivElement>(null);
+  const observerTarget = useRef<HTMLDivElement>(null)
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-  } = useInfiniteQuery({
-    queryKey: ['posts', 'all'],
-    queryFn: ({ pageParam = 1 }) => blogApi.getPosts(pageParam, 10, false),
-    getNextPageParam: (lastPage) => {
-      if (lastPage.hasMore) {
-        return lastPage.page + 1;
-      }
-      return undefined;
-    },
-    initialPageParam: 1,
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteQuery({
+      queryKey: ['posts', 'all'],
+      queryFn: ({ pageParam = 1 }) => blogApi.getPosts(pageParam, 10, false),
+      getNextPageParam: (lastPage) => {
+        if (lastPage.hasMore) {
+          return lastPage.page + 1
+        }
+        return undefined
+      },
+      initialPageParam: 1,
+    })
 
   // Use useMemo to avoid recalculating on every render
   const posts = useMemo(() => {
-    if (!data?.pages) return [];
-    return data.pages.flatMap((page) => page.posts || []);
-  }, [data?.pages]);
+    if (!data?.pages) return []
+    return data.pages.flatMap((page) => page.posts || [])
+  }, [data?.pages])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
+          fetchNextPage()
         }
       },
-      { threshold: 0.1 }
-    );
+      { threshold: 0.1 },
+    )
 
-    const currentTarget = observerTarget.current;
+    const currentTarget = observerTarget.current
     if (currentTarget) {
-      observer.observe(currentTarget);
+      observer.observe(currentTarget)
     }
 
     return () => {
       if (currentTarget) {
-        observer.unobserve(currentTarget);
+        observer.unobserve(currentTarget)
       }
-    };
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
   if (isLoading) {
     return (
       <div className={styles.container}>
         <div className={styles.loading}>Loading posts...</div>
       </div>
-    );
+    )
   }
 
   return (
@@ -80,7 +75,11 @@ export default function PostsPage() {
         ) : (
           <div className={styles.postsGrid}>
             {posts.map((post) => (
-              <Link key={post.id} href={`/posts/${post.id}`} className={styles.postCard}>
+              <Link
+                key={post.id}
+                href={`/posts/${post.id}`}
+                className={styles.postCard}
+              >
                 <div className={styles.imageContainer}>
                   {post.imageUrl ? (
                     <Image
@@ -113,5 +112,5 @@ export default function PostsPage() {
         </div>
       </main>
     </div>
-  );
+  )
 }

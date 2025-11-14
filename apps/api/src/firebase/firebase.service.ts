@@ -1,22 +1,22 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
-import * as admin from 'firebase-admin';
+import { Injectable, OnModuleInit } from '@nestjs/common'
+import * as admin from 'firebase-admin'
 
 @Injectable()
 export class FirebaseService implements OnModuleInit {
-  private db: admin.firestore.Firestore;
-  private storage: admin.storage.Storage;
-  private bucket: ReturnType<admin.storage.Storage['bucket']>;
+  private db: admin.firestore.Firestore
+  private storage: admin.storage.Storage
+  private bucket: ReturnType<admin.storage.Storage['bucket']>
 
   onModuleInit() {
     if (!admin.apps.length) {
-      let serviceAccount = null;
+      let serviceAccount = null
 
       if (process.env.FIREBASE_SERVICE_ACCOUNT) {
         try {
-          serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+          serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
         } catch (error) {
-          console.error('Failed to parse FIREBASE_SERVICE_ACCOUNT:', error);
-          throw new Error('Invalid FIREBASE_SERVICE_ACCOUNT JSON format');
+          console.error('Failed to parse FIREBASE_SERVICE_ACCOUNT:', error)
+          throw new Error('Invalid FIREBASE_SERVICE_ACCOUNT JSON format')
         }
       }
 
@@ -24,92 +24,92 @@ export class FirebaseService implements OnModuleInit {
         admin.initializeApp({
           credential: admin.credential.cert(serviceAccount),
           storageBucket: process.env.FIREBASE_STORAGE_BUCKET || undefined,
-        });
+        })
       } else {
         // For local development, you can use Firebase emulator
         admin.initializeApp({
           projectId: process.env.FIREBASE_PROJECT_ID || 'blog-project',
           storageBucket: process.env.FIREBASE_STORAGE_BUCKET || undefined,
-        });
+        })
       }
     }
 
     // Initialize Firestore for auth (users, refresh tokens)
-    this.db = admin.firestore();
+    this.db = admin.firestore()
 
     // Initialize Storage for image uploads
-    this.storage = admin.storage();
-    const bucketName = process.env.FIREBASE_STORAGE_BUCKET;
+    this.storage = admin.storage()
+    const bucketName = process.env.FIREBASE_STORAGE_BUCKET
 
     if (!bucketName) {
       console.warn(
         'FIREBASE_STORAGE_BUCKET not set. Image uploads may not work.',
-      );
+      )
     }
 
-    this.bucket = this.storage.bucket(bucketName);
+    this.bucket = this.storage.bucket(bucketName)
   }
 
   getFirestore(): admin.firestore.Firestore {
-    return this.db;
+    return this.db
   }
 
   getStorage(): admin.storage.Storage {
-    return this.storage;
+    return this.storage
   }
 
   getBucket(): ReturnType<admin.storage.Storage['bucket']> {
-    return this.bucket;
+    return this.bucket
   }
 
   async uploadImage(file: Express.Multer.File, path: string): Promise<string> {
     if (!file || !file.buffer) {
-      throw new Error('Invalid file provided');
+      throw new Error('Invalid file provided')
     }
 
     if (!path || path.trim().length === 0) {
-      throw new Error('Invalid file path provided');
+      throw new Error('Invalid file path provided')
     }
 
     if (!this.bucket) {
-      throw new Error('Firebase Storage bucket not initialized');
+      throw new Error('Firebase Storage bucket not initialized')
     }
 
-    const fileUpload = this.bucket.file(path);
+    const fileUpload = this.bucket.file(path)
     const stream = fileUpload.createWriteStream({
       metadata: {
         contentType: file.mimetype,
       },
-    });
+    })
 
     return new Promise((resolve, reject) => {
       stream.on('error', (error) => {
-        reject(error);
-      });
+        reject(error)
+      })
 
       stream.on('finish', async () => {
         try {
           // Make the file publicly accessible
-          await fileUpload.makePublic();
-          const publicUrl = `https://storage.googleapis.com/${this.bucket.name}/${path}`;
-          resolve(publicUrl);
+          await fileUpload.makePublic()
+          const publicUrl = `https://storage.googleapis.com/${this.bucket.name}/${path}`
+          resolve(publicUrl)
         } catch (error) {
-          reject(error);
+          reject(error)
         }
-      });
+      })
 
-      stream.end(file.buffer);
-    });
+      stream.end(file.buffer)
+    })
   }
 
   async deleteImage(path: string): Promise<void> {
     if (!this.bucket) {
-      throw new Error('Firebase Storage bucket not initialized');
+      throw new Error('Firebase Storage bucket not initialized')
     }
     if (!path || path.trim().length === 0) {
-      throw new Error('Invalid file path provided');
+      throw new Error('Invalid file path provided')
     }
-    const file = this.bucket.file(path);
-    await file.delete();
+    const file = this.bucket.file(path)
+    await file.delete()
   }
 }

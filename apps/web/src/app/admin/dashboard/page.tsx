@@ -1,64 +1,64 @@
-'use client';
+'use client'
 
-import { useEffect, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAtomValue } from 'jotai';
-import { useQuery } from '@tanstack/react-query';
-import Link from 'next/link';
-import { userAtom } from '@/store/auth';
-import { blogApi, authApi, BlogPost } from '@/lib/api';
-import { Button } from '@/components/common/Button';
-import styles from './page.module.scss';
+import { useEffect, useMemo } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAtomValue } from 'jotai'
+import { useQuery } from '@tanstack/react-query'
+import Link from 'next/link'
+import { userAtom } from '@/store/auth'
+import { blogApi, authApi, BlogPost } from '@/lib/api'
+import { Button } from '@/components/common/Button'
+import styles from './page.module.scss'
 
 export default function AdminDashboard() {
-  const router = useRouter();
-  const user = useAtomValue(userAtom);
+  const router = useRouter()
+  const user = useAtomValue(userAtom)
 
   const { data: postsData } = useQuery({
     queryKey: ['posts', 'admin'],
     queryFn: () => blogApi.getPosts(1, 100, true),
     enabled: !!user,
-  });
+  })
 
   useEffect(() => {
     if (!user) {
-      router.push('/admin/login');
+      router.push('/admin/login')
     }
-  }, [user, router]);
+  }, [user, router])
 
   const handleLogout = async () => {
     try {
-      await authApi.logout();
+      await authApi.logout()
       if (typeof window !== 'undefined') {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('refreshToken')
       }
-      router.push('/');
+      router.push('/')
     } catch (error) {
-      console.error('Logout failed:', error);
+      console.error('Logout failed:', error)
     }
-  };
+  }
 
   // Optimize filtering with useMemo to avoid recalculating on every render
   const { publishedPosts, draftPosts } = useMemo(() => {
-    const posts: BlogPost[] = postsData?.posts || [];
-    const published: BlogPost[] = [];
-    const drafts: BlogPost[] = [];
-    
+    const posts: BlogPost[] = postsData?.posts || []
+    const published: BlogPost[] = []
+    const drafts: BlogPost[] = []
+
     // Single pass through posts array
     posts.forEach((post) => {
       if (post.published) {
-        published.push(post);
+        published.push(post)
       } else {
-        drafts.push(post);
+        drafts.push(post)
       }
-    });
-    
-    return { publishedPosts: published, draftPosts: drafts };
-  }, [postsData?.posts]);
+    })
+
+    return { publishedPosts: published, draftPosts: drafts }
+  }, [postsData?.posts])
 
   if (!user) {
-    return null;
+    return null
   }
 
   return (
@@ -83,7 +83,9 @@ export default function AdminDashboard() {
 
       <main className={styles.main}>
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Published Posts ({publishedPosts.length})</h2>
+          <h2 className={styles.sectionTitle}>
+            Published Posts ({publishedPosts.length})
+          </h2>
           {publishedPosts.length === 0 ? (
             <p className={styles.empty}>No published posts</p>
           ) : (
@@ -129,5 +131,5 @@ export default function AdminDashboard() {
         </section>
       </main>
     </div>
-  );
+  )
 }

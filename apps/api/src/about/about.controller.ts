@@ -4,11 +4,10 @@ import {
   Put,
   Body,
   UseGuards,
-  Request,
   BadRequestException,
-} from '@nestjs/common';
-import { AboutService } from './about.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+} from '@nestjs/common'
+import { AboutService } from './about.service'
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 
 @Controller('about')
 export class AboutController {
@@ -16,15 +15,15 @@ export class AboutController {
 
   @Get()
   async getAbout() {
-    return this.aboutService.getAbout();
+    return this.aboutService.getAbout()
   }
 
   @Put()
   @UseGuards(JwtAuthGuard)
-  async updateAbout(@Body() body: { content: string }, @Request() req) {
+  async updateAbout(@Body() body: { content: string }) {
     if (!body.content || typeof body.content !== 'string') {
-      throw new BadRequestException('Content is required and must be a string');
+      throw new BadRequestException('Content is required and must be a string')
     }
-    return this.aboutService.updateAbout(body.content);
+    return this.aboutService.updateAbout(body.content)
   }
 }

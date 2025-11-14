@@ -1,34 +1,34 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
+import { Document } from 'mongoose'
 
-export type PostDocument = Post & Document;
+export type PostDocument = Post & Document
 
 @Schema({ timestamps: true })
 export class Post {
   @Prop({ required: true })
-  title: string;
+  title: string
 
   @Prop({ required: true, type: String })
-  content: string;
+  content: string
 
   @Prop({ required: true })
-  summary: string;
+  summary: string
 
   @Prop({ default: '' })
-  imageUrl: string;
+  imageUrl: string
 
   @Prop({ default: false })
-  published: boolean;
+  published: boolean
 
   @Prop({ required: true })
-  authorId: string;
+  authorId: string
 
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: Date
+  updatedAt?: Date
 }
 
-export const PostSchema = SchemaFactory.createForClass(Post);
+export const PostSchema = SchemaFactory.createForClass(Post)
 
 // Create indexes
-PostSchema.index({ createdAt: -1 });
-PostSchema.index({ published: 1, createdAt: -1 });
+PostSchema.index({ createdAt: -1 })
+PostSchema.index({ published: 1, createdAt: -1 })

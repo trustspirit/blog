@@ -9,9 +9,9 @@ import {
   Query,
   UseGuards,
   Request,
-} from '@nestjs/common';
-import { PostsService, CreatePostDto, UpdatePostDto } from './posts.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+} from '@nestjs/common'
+import { PostsService, CreatePostDto, UpdatePostDto } from './posts.service'
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 
 @Controller('posts')
 export class PostsController {
@@ -23,27 +23,27 @@ export class PostsController {
     @Query('limit') limit?: string,
     @Query('includeDrafts') includeDrafts?: string,
   ) {
-    const pageNum = page ? Math.max(1, parseInt(page, 10)) || 1 : 1;
-    const limitNum = limit ? Math.max(1, parseInt(limit, 10)) || 10 : 10;
-    const includeDraftsBool = includeDrafts === 'true';
-    return this.postsService.findAll(pageNum, limitNum, includeDraftsBool);
+    const pageNum = page ? Math.max(1, parseInt(page, 10)) || 1 : 1
+    const limitNum = limit ? Math.max(1, parseInt(limit, 10)) || 10 : 10
+    const includeDraftsBool = includeDrafts === 'true'
+    return this.postsService.findAll(pageNum, limitNum, includeDraftsBool)
   }
 
   @Get('admin/:id')
   @UseGuards(JwtAuthGuard)
   async findOneForAdmin(@Param('id') id: string) {
-    return this.postsService.findOneForAdmin(id);
+    return this.postsService.findOneForAdmin(id)
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return this.postsService.findOne(id);
+    return this.postsService.findOne(id)
   }
 
   @Post()
   @UseGuards(JwtAuthGuard)
   async create(@Body() postData: CreatePostDto, @Request() req) {
-    return this.postsService.create(postData, req.user.userId);
+    return this.postsService.create(postData, req.user.userId)
   }
 
   @Put(':id')
@@ -53,12 +53,12 @@ export class PostsController {
     @Body() postData: UpdatePostDto,
     @Request() req,
   ) {
-    return this.postsService.update(id, postData, req.user.userId);
+    return this.postsService.update(id, postData, req.user.userId)
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   async delete(@Param('id') id: string, @Request() req) {
-    return this.postsService.delete(id, req.user.userId);
+    return this.postsService.delete(id, req.user.userId)
   }
 }

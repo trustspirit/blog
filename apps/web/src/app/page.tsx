@@ -1,19 +1,19 @@
-'use client';
+'use client'
 
-import { useQuery } from '@tanstack/react-query';
-import Link from 'next/link';
-import { blogApi } from '@/lib/api';
-import { BlogCarousel } from '@/components/BlogCarousel';
-import { Button } from '@/components/common/Button';
-import styles from './page.module.scss';
+import { useQuery } from '@tanstack/react-query'
+import Link from 'next/link'
+import { blogApi } from '@/lib/api'
+import { BlogCarousel } from '@/components/BlogCarousel'
+import { Button } from '@/components/common/Button'
+import styles from './page.module.scss'
 
 export default function Home() {
   const { data, isLoading } = useQuery({
     queryKey: ['posts', 'recent'],
     queryFn: () => blogApi.getPosts(1, 10, false),
-  });
+  })
 
-  const posts = data?.posts || [];
+  const posts = data?.posts || []
 
   return (
     <div className={styles.container}>
@@ -51,5 +51,5 @@ export default function Home() {
         </div>
       </main>
     </div>
-  );
+  )
 }

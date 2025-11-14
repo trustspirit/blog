@@ -1,12 +1,13 @@
-import React from 'react';
-import clsx from 'clsx';
-import styles from './TextField.module.scss';
+import React from 'react'
+import clsx from 'clsx'
+import styles from './TextField.module.scss'
 
-export interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-  error?: string;
-  helperText?: string;
-  fullWidth?: boolean;
+export interface TextFieldProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: string
+  error?: string
+  helperText?: string
+  fullWidth?: boolean
 }
 
 export const TextField: React.FC<TextFieldProps> = ({
@@ -18,7 +19,7 @@ export const TextField: React.FC<TextFieldProps> = ({
   id,
   ...props
 }) => {
-  const inputId = id || `textfield-${Math.random().toString(36).substr(2, 9)}`;
+  const inputId = id || `textfield-${Math.random().toString(36).substr(2, 9)}`
 
   return (
     <div className={clsx(styles.container, fullWidth && styles.fullWidth)}>
@@ -29,11 +30,7 @@ export const TextField: React.FC<TextFieldProps> = ({
       )}
       <input
         id={inputId}
-        className={clsx(
-          styles.input,
-          error && styles.error,
-          className
-        )}
+        className={clsx(styles.input, error && styles.error, className)}
         {...props}
       />
       {(error || helperText) && (
@@ -42,5 +39,5 @@ export const TextField: React.FC<TextFieldProps> = ({
         </span>
       )}
     </div>
-  );
-};
+  )
+}

@@ -1,57 +1,57 @@
-'use client';
+'use client'
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { useAtomValue } from 'jotai';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { userAtom } from '@/store/auth';
-import { blogApi } from '@/lib/api';
-import { Button } from '@/components/common/Button';
-import { RichTextEditor } from '@/components/RichTextEditor';
-import styles from './page.module.scss';
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { useAtomValue } from 'jotai'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { userAtom } from '@/store/auth'
+import { blogApi } from '@/lib/api'
+import { Button } from '@/components/common/Button'
+import { RichTextEditor } from '@/components/RichTextEditor'
+import styles from './page.module.scss'
 
 export default function EditAboutPage() {
-  const router = useRouter();
-  const user = useAtomValue(userAtom);
-  const queryClient = useQueryClient();
-  const [content, setContent] = useState('');
+  const router = useRouter()
+  const user = useAtomValue(userAtom)
+  const queryClient = useQueryClient()
+  const [content, setContent] = useState('')
 
   const { data: about, isLoading } = useQuery({
     queryKey: ['about'],
     queryFn: () => blogApi.getAbout(),
-  });
+  })
 
   useEffect(() => {
     if (!user) {
-      router.push('/admin/login');
+      router.push('/admin/login')
     }
-  }, [user, router]);
+  }, [user, router])
 
   useEffect(() => {
     if (about) {
-      setContent(about.content || '');
+      setContent(about.content || '')
     }
-  }, [about]);
+  }, [about])
 
   const updateMutation = useMutation({
     mutationFn: (newContent: string) => blogApi.updateAbout(newContent),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['about'] });
-      router.push('/admin/dashboard');
+      queryClient.invalidateQueries({ queryKey: ['about'] })
+      router.push('/admin/dashboard')
     },
-  });
+  })
 
   const handleSave = () => {
-    updateMutation.mutate(content);
-  };
+    updateMutation.mutate(content)
+  }
 
   if (!user) {
-    return null;
+    return null
   }
 
   if (isLoading) {
-    return <div className={styles.container}>Loading...</div>;
+    return <div className={styles.container}>Loading...</div>
   }
 
   return (
@@ -74,14 +74,11 @@ export default function EditAboutPage() {
         </div>
 
         <div className={styles.actions}>
-          <Button
-            onClick={handleSave}
-            disabled={updateMutation.isPending}
-          >
+          <Button onClick={handleSave} disabled={updateMutation.isPending}>
             {updateMutation.isPending ? 'Saving...' : 'Save'}
           </Button>
         </div>
       </main>
     </div>
-  );
+  )
 }

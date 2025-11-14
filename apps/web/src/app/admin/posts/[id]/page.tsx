@@ -1,45 +1,45 @@
-"use client";
+'use client'
 
-import { useEffect, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
-import Link from "next/link";
-import { useAtomValue } from "jotai";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { userAtom } from "@/store/auth";
-import { blogApi, CreateBlogPostDto, UpdateBlogPostDto } from "@/lib/api";
-import { Button } from "@/components/common/Button";
-import { TextField } from "@/components/common/TextField";
-import { TextArea } from "@/components/common/TextArea";
-import { RichTextEditor } from "@/components/RichTextEditor";
-import styles from "./page.module.scss";
+import { useEffect, useState } from 'react'
+import { useRouter, useParams } from 'next/navigation'
+import Link from 'next/link'
+import { useAtomValue } from 'jotai'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { userAtom } from '@/store/auth'
+import { blogApi, CreateBlogPostDto, UpdateBlogPostDto } from '@/lib/api'
+import { Button } from '@/components/common/Button'
+import { TextField } from '@/components/common/TextField'
+import { TextArea } from '@/components/common/TextArea'
+import { RichTextEditor } from '@/components/RichTextEditor'
+import styles from './page.module.scss'
 
 export default function EditPostPage() {
-  const router = useRouter();
-  const params = useParams();
-  const user = useAtomValue(userAtom);
-  const queryClient = useQueryClient();
-  const id = params.id as string;
-  const isNew = id === "new";
+  const router = useRouter()
+  const params = useParams()
+  const user = useAtomValue(userAtom)
+  const queryClient = useQueryClient()
+  const id = params.id as string
+  const isNew = id === 'new'
 
   const [formData, setFormData] = useState<CreateBlogPostDto>({
-    title: "",
-    content: "",
-    summary: "",
-    imageUrl: "",
+    title: '',
+    content: '',
+    summary: '',
+    imageUrl: '',
     published: false,
-  });
+  })
 
   const { data: post, isLoading } = useQuery({
-    queryKey: ["post", "admin", id],
+    queryKey: ['post', 'admin', id],
     queryFn: () => blogApi.getPostForAdmin(id),
     enabled: !isNew && !!id,
-  });
+  })
 
   useEffect(() => {
     if (!user) {
-      router.push("/admin/login");
+      router.push('/admin/login')
     }
-  }, [user, router]);
+  }, [user, router])
 
   useEffect(() => {
     if (post && !isNew) {
@@ -49,48 +49,48 @@ export default function EditPostPage() {
         summary: post.summary,
         imageUrl: post.imageUrl,
         published: post.published,
-      });
+      })
     }
-  }, [post, isNew]);
+  }, [post, isNew])
 
   const saveMutation = useMutation({
     mutationFn: (data: CreateBlogPostDto | UpdateBlogPostDto) => {
       if (isNew) {
-        return blogApi.createPost(data as CreateBlogPostDto);
+        return blogApi.createPost(data as CreateBlogPostDto)
       }
-      return blogApi.updatePost(id, data);
+      return blogApi.updatePost(id, data)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
-      router.push("/admin/dashboard");
+      queryClient.invalidateQueries({ queryKey: ['posts'] })
+      router.push('/admin/dashboard')
     },
-  });
+  })
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    saveMutation.mutate(formData);
-  };
+    e.preventDefault()
+    saveMutation.mutate(formData)
+  }
 
   const handleSaveDraft = () => {
-    saveMutation.mutate({ ...formData, published: false });
-  };
+    saveMutation.mutate({ ...formData, published: false })
+  }
 
   const handlePublish = () => {
-    saveMutation.mutate({ ...formData, published: true });
-  };
+    saveMutation.mutate({ ...formData, published: true })
+  }
 
   if (!user) {
-    return null;
+    return null
   }
 
   if (!isNew && isLoading) {
-    return <div className={styles.container}>Loading...</div>;
+    return <div className={styles.container}>Loading...</div>
   }
 
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1 className={styles.title}>{isNew ? "New Post" : "Edit Post"}</h1>
+        <h1 className={styles.title}>{isNew ? 'New Post' : 'Edit Post'}</h1>
         <Link href="/admin/dashboard" className={styles.backLink}>
           ← Back to Dashboard
         </Link>
@@ -150,11 +150,11 @@ export default function EditPostPage() {
               onClick={handlePublish}
               disabled={saveMutation.isPending}
             >
-              {saveMutation.isPending ? "Publishing..." : "Publish"}
+              {saveMutation.isPending ? 'Publishing...' : 'Publish'}
             </Button>
           </div>
         </form>
       </main>
     </div>
-  );
+  )
 }

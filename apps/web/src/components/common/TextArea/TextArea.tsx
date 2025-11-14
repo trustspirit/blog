@@ -1,12 +1,13 @@
-import React from 'react';
-import clsx from 'clsx';
-import styles from './TextArea.module.scss';
+import React from 'react'
+import clsx from 'clsx'
+import styles from './TextArea.module.scss'
 
-export interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  label?: string;
-  error?: string;
-  helperText?: string;
-  fullWidth?: boolean;
+export interface TextAreaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  label?: string
+  error?: string
+  helperText?: string
+  fullWidth?: boolean
 }
 
 export const TextArea: React.FC<TextAreaProps> = ({
@@ -18,7 +19,7 @@ export const TextArea: React.FC<TextAreaProps> = ({
   id,
   ...props
 }) => {
-  const textareaId = id || `textarea-${Math.random().toString(36).substr(2, 9)}`;
+  const textareaId = id || `textarea-${Math.random().toString(36).substr(2, 9)}`
 
   return (
     <div className={clsx(styles.container, fullWidth && styles.fullWidth)}>
@@ -29,11 +30,7 @@ export const TextArea: React.FC<TextAreaProps> = ({
       )}
       <textarea
         id={textareaId}
-        className={clsx(
-          styles.textarea,
-          error && styles.error,
-          className
-        )}
+        className={clsx(styles.textarea, error && styles.error, className)}
         {...props}
       />
       {(error || helperText) && (
@@ -42,5 +39,5 @@ export const TextArea: React.FC<TextAreaProps> = ({
         </span>
       )}
     </div>
-  );
-};
+  )
+}

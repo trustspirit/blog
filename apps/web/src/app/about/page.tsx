@@ -1,22 +1,22 @@
-'use client';
+'use client'
 
-import { useQuery } from '@tanstack/react-query';
-import Link from 'next/link';
-import { blogApi } from '@/lib/api';
-import styles from './page.module.scss';
+import { useQuery } from '@tanstack/react-query'
+import Link from 'next/link'
+import { blogApi } from '@/lib/api'
+import styles from './page.module.scss'
 
 export default function AboutPage() {
   const { data: about, isLoading } = useQuery({
     queryKey: ['about'],
     queryFn: () => blogApi.getAbout(),
-  });
+  })
 
   if (isLoading) {
     return (
       <div className={styles.container}>
         <div className={styles.loading}>Loading...</div>
       </div>
-    );
+    )
   }
 
   return (
@@ -37,5 +37,5 @@ export default function AboutPage() {
         />
       </main>
     </div>
-  );
+  )
 }

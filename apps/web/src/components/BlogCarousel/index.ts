@@ -1,1 +1,1 @@
-export { BlogCarousel } from './BlogCarousel';
+export { BlogCarousel } from './BlogCarousel'
