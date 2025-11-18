@@ -95,7 +95,7 @@ build_image() {
     -f apps/api/Dockerfile \
     -t "$IMAGE_NAME:latest" \
     -t "$IMAGE_NAME:$(date +%Y%m%d-%H%M%S)" \
-    .
+    apps/api
   
   echo -e "${GREEN}Docker image built successfully.${NC}"
 }
@@ -134,7 +134,6 @@ deploy_service() {
     --timeout 300 \
     --concurrency 80 \
     $UPDATE_FLAG "PORT=3010" \
-    --set-env-vars "NODE_ENV=production" \
     --quiet
   
   # Get service URL

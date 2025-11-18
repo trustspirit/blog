@@ -1,0 +1,87 @@
+# golangci-lint configuration
+# See: https://golangci-lint.run/usage/configuration/
+
+run:
+  timeout: 5m
+  tests: true
+  modules-download-mode: readonly
+
+linters:
+  enable:
+    - errcheck        # Check for unchecked errors
+    - gosimple        # Simplify code
+    - govet           # Vet examines Go source code
+    - ineffassign     # Detect ineffectual assignments
+    - staticcheck     # Advanced Go linter
+    - unused          # Check for unused constants, variables, functions and types
+    - gofmt           # Check whether code was gofmt-ed
+    - goimports       # Check import statements are formatted
+    - misspell        # Finds commonly misspelled English words
+    - revive          # Fast, configurable, extensible, flexible, and beautiful linter for Go
+    - gosec           # Inspects source code for security problems
+    - unconvert       # Remove unnecessary type conversions
+    - typecheck       # Like the front-end of a Go compiler, parses and type-checks Go code
+    - bodyclose       # Checks whether HTTP response body is closed successfully
+    - errname         # Checks that sentinel errors are prefixed with the Err and error types are suffixed with the Error
+    - errorlint       # Find code that will cause problems with the error wrapping scheme introduced in Go 1.13
+    - goprintffuncname # Checks that printf-like functions are named with f at the end
+    - noctx           # Finds sending http request without context.Context
+    - prealloc        # Finds slice declarations that could potentially be pre-allocated
+    - predeclared     # Find code that shadows one of Go's predeclared identifiers
+    - rowserrcheck    # Checks whether Err of rows is checked successfully
+    - sqlclosecheck   # Checks that sql.Rows and sql.Stmt are closed
+    - whitespace      # Detection of leading and trailing whitespace
+
+linters-settings:
+  errcheck:
+    check-type-assertions: true
+    check-blank: true
+
+  govet:
+    check-shadowing: true
+
+  gofmt:
+    simplify: true
+
+  goimports:
+    local-prefixes: blog/api
+
+  revive:
+    rules:
+      - name: exported
+        disabled: false
+      - name: var-naming
+        disabled: false
+      - name: package-comments
+        disabled: true
+
+  misspell:
+    locale: US
+
+  gosec:
+    excludes:
+      - G404 # Insecure random number source (crypto/rand)
+
+  staticcheck:
+    checks: ["all"]
+
+issues:
+  exclude-rules:
+    # Exclude some linters from running on tests files
+    - path: _test\.go
+      linters:
+        - gosec
+        - errcheck
+
+    # Exclude known issues
+    - text: "Error return value of .((os\\.)?std(out|err)\\..*|.*Close|.*Flush|os\\.Remove(All)?|.*print(f|ln)?|os\\.(Un)?Setenv). is not checked"
+      linters:
+        - errcheck
+
+  max-issues-per-linter: 0
+  max-same-issues: 0
+
+output:
+  format: colored-line-number
+  print-issued-lines: true
+  print-linter-name: true

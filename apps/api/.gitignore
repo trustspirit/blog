@@ -1,35 +1,27 @@
-# compiled output
-/dist
-/node_modules
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+main
 
-# Logs
-logs
-*.log
-npm-debug.log*
-pnpm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
+# Test binary
+*.test
 
-# OS
-.DS_Store
+# Output of the go coverage tool
+*.out
 
-# Tests
-/coverage
-/.nyc_output
+# Environment files
+.env
+.env.local
 
-# IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
+# Go workspace file
+go.work
 
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

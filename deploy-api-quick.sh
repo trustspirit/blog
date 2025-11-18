@@ -25,7 +25,7 @@ echo "Service: $SERVICE_NAME"
 echo ""
 
 # Build
-docker build -f apps/api/Dockerfile -t "$IMAGE_NAME:latest" .
+docker build -f apps/api/Dockerfile -t "$IMAGE_NAME:latest" apps/api
 
 # Push
 gcloud auth configure-docker --quiet
