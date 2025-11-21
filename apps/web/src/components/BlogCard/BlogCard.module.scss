@@ -102,13 +102,13 @@
 .title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #ffffff;
+  color: #000000;
   margin: 0 0 var(--spacing-sm);
   line-height: 1.4;
   transition: color var(--transition-fast);
 
   .card:hover & {
-    color: #ffffff;
+    color: #111111;
   }
 }
 
