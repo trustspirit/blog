@@ -6,7 +6,7 @@
 
 .header {
   padding: 24px 48px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -17,11 +17,12 @@
   font-size: 32px;
   font-weight: 700;
   margin: 0 0 8px;
+  color: var(--text-primary);
 }
 
 .subtitle {
   font-size: 16px;
-  color: #666;
+  color: var(--text-secondary);
   margin: 0;
 }
 
@@ -47,6 +48,7 @@
   font-size: 24px;
   font-weight: 600;
   margin: 0 0 24px;
+  color: var(--text-primary);
 }
 
 .postsList {
@@ -60,13 +62,13 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background: #fff;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  transition: box-shadow 0.2s ease;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: box-shadow var(--transition-base);
 
   &:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md);
   }
 }
 
@@ -78,16 +80,17 @@
   font-size: 18px;
   font-weight: 600;
   margin: 0 0 4px;
+  color: var(--text-primary);
 }
 
 .postDate {
   font-size: 14px;
-  color: #666;
+  color: var(--text-secondary);
   margin: 0;
 }
 
 .empty {
-  color: #666;
+  color: var(--text-secondary);
   font-style: italic;
 }
 

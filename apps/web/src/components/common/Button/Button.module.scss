@@ -1,9 +1,9 @@
 .button {
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -20,42 +20,42 @@
 }
 
 .primary {
-  background: #000;
-  color: #fff;
+  background: var(--text-primary);
+  color: var(--text-inverse);
 
   &:hover:not(:disabled) {
-    background: #333;
+    background: var(--accent);
   }
 
   &:active:not(:disabled) {
-    background: #1a1a1a;
+    background: var(--accent-dark);
   }
 }
 
 .secondary {
-  background: #f5f5f5;
-  color: #000;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
 
   &:hover:not(:disabled) {
-    background: #e5e5e5;
+    background: var(--bg-tertiary);
   }
 
   &:active:not(:disabled) {
-    background: #d5d5d5;
+    background: var(--border);
   }
 }
 
 .outline {
   background: transparent;
-  color: #000;
-  border: 1px solid #000;
+  color: var(--text-primary);
+  border: 1px solid var(--text-primary);
 
   &:hover:not(:disabled) {
-    background: #f5f5f5;
+    background: var(--bg-secondary);
   }
 
   &:active:not(:disabled) {
-    background: #e5e5e5;
+    background: var(--bg-tertiary);
   }
 }
 

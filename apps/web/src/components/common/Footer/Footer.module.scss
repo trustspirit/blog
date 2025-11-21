@@ -1,7 +1,7 @@
 .footer {
-  border-radius: 6px;
-  background-color: #0a0a0a;
-  color: #e5e5e5;
+  border-radius: var(--radius-sm);
+  background-color: var(--accent-dark);
+  color: var(--text-inverse);
   margin-top: var(--spacing-2xl);
 }
 
@@ -21,7 +21,7 @@
   gap: var(--spacing-2xl);
   margin-bottom: var(--spacing-2xl);
   padding-bottom: var(--spacing-2xl);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border);
 
   @media (max-width: 1024px) {
     grid-template-columns: 1fr 1fr;
@@ -49,22 +49,16 @@
   width: fit-content;
 }
 
-.logoIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .logoText {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-inverse);
 }
 
 .mission {
   font-size: 0.9375rem;
   line-height: 1.6;
-  color: #a3a3a3;
+  color: var(--text-inverse);
   margin: 0;
   max-width: 320px;
 }
@@ -93,7 +87,7 @@
 .linkTitle {
   font-size: 1rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-inverse);
   margin: 0;
 }
 
@@ -107,12 +101,12 @@
 
   a {
     font-size: 0.9375rem;
-    color: #a3a3a3;
+    color: var(--text-inverse);
     text-decoration: none;
     transition: color var(--transition-fast);
 
     &:hover {
-      color: #ffffff;
+      color: var(--bg-tertiary);
     }
   }
 }
@@ -129,15 +123,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #a3a3a3;
-  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-inverse);
+  background-color: var(--bg-overlay);
   border-radius: 50%;
   text-decoration: none;
   transition: all var(--transition-fast);
 
   &:hover {
-    color: #ffffff;
-    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-inverse);
+    background-color: var(--accent);
     transform: translateY(-2px);
   }
 
@@ -162,7 +156,7 @@
 
 .copyright {
   font-size: 0.875rem;
-  color: #737373;
+  color: var(--text-inverse);
   margin: 0;
 }
 
@@ -172,12 +166,12 @@
 
   a {
     font-size: 0.875rem;
-    color: #737373;
+    color: var(--text-inverse);
     text-decoration: none;
     transition: color var(--transition-fast);
 
     &:hover {
-      color: #ffffff;
+      color: var(--bg-tertiary);
     }
   }
 }

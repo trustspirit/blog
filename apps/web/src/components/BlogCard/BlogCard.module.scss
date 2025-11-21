@@ -1,6 +1,6 @@
 .card {
-  background-color: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
   overflow: hidden;
   transition: all var(--transition-base);
@@ -11,8 +11,8 @@
 
   &:hover {
     transform: translateY(-4px);
-    background-color: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.15);
+    background-color: var(--bg-secondary);
+    border-color: var(--accent);
 
     .image {
       transform: scale(1.05);
@@ -58,9 +58,9 @@
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #ffffff;
-  background-color: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--bg-secondary);
+  background-color: var(--bg-overlay);
+  border: 1px solid var(--accent);
   border-radius: var(--radius-lg);
   z-index: 1;
   backdrop-filter: blur(4px);
@@ -86,35 +86,36 @@
   padding: 0.25rem 0.75rem;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #ffffff;
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-primary);
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--accent);
   border-radius: var(--radius-md);
   text-transform: capitalize;
   transition: all var(--transition-fast);
 
   .card:hover & {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.3);
+    background-color: var(--accent);
+    color: var(--bg-secondary);
+    border-color: var(--accent-dark);
   }
 }
 
 .title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #000000;
+  color: var(--text-primary);
   margin: 0 0 var(--spacing-sm);
   line-height: 1.4;
   transition: color var(--transition-fast);
 
   .card:hover & {
-    color: #111111;
+    color: var(--accent);
   }
 }
 
 .summary {
   font-size: 0.9375rem;
-  color: #a3a3a3;
+  color: var(--text-secondary);
   line-height: 1.6;
   margin: 0 0 var(--spacing-md);
   display: -webkit-box;
@@ -129,13 +130,13 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 0.875rem;
-  color: #737373;
+  color: var(--text-secondary);
   margin-top: auto;
 }
 
 .date,
 .readTime {
-  color: #737373;
+  color: var(--text-secondary);
 }
 
 .readTime {

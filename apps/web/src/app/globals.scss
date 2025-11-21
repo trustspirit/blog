@@ -1,21 +1,21 @@
 :root {
-  /* Modern Light theme colors - Enhanced palette */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f7f8fa;
-  --bg-tertiary: #eef1f6;
-  --bg-overlay: rgba(0, 0, 0, 0.5);
-  --text-primary: #1a202c;
-  --text-secondary: #4a5568;
-  --text-tertiary: #718096;
-  --text-inverse: #ffffff;
-  --border: #e2e8f0;
-  --border-light: #f0f4f8;
+  /* Color theme: #1E2022, #52616B, #C9D6DF, #F0F5F9, #FFFFFF */
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F0F5F9;
+  --bg-tertiary: #C9D6DF;
+  --bg-overlay: rgba(30, 32, 34, 0.5);
+  --text-primary: #1E2022;
+  --text-secondary: #52616B;
+  --text-tertiary: #52616B;
+  --text-inverse: #FFFFFF;
+  --border: #C9D6DF;
+  --border-light: #F0F5F9;
 
-  /* Accent colors - Vibrant and modern */
-  --accent: #5b6cf2;
-  --accent-hover: #4c5de4;
-  --accent-light: #eef0ff;
-  --accent-dark: #3d4ed8;
+  /* Accent colors */
+  --accent: #52616B;
+  --accent-hover: #1E2022;
+  --accent-light: #C9D6DF;
+  --accent-dark: #1E2022;
 
   /* Functional colors */
   --success: #10b981;
@@ -34,12 +34,12 @@
     0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 
-  /* Gradients - Modern and vibrant */
-  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  --gradient-sunset: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-  --gradient-ocean: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /* Gradients - Theme based */
+  --gradient-primary: linear-gradient(135deg, #52616B 0%, #1E2022 100%);
+  --gradient-secondary: linear-gradient(135deg, #C9D6DF 0%, #52616B 100%);
+  --gradient-accent: linear-gradient(135deg, #52616B 0%, #C9D6DF 100%);
+  --gradient-sunset: linear-gradient(135deg, #52616B 0%, #C9D6DF 100%);
+  --gradient-ocean: linear-gradient(135deg, #52616B 0%, #1E2022 100%);
   --gradient-hero-overlay: linear-gradient(
     to top,
     rgba(0, 0, 0, 0.8) 0%,
@@ -60,14 +60,9 @@
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
   --radius-xl: 1rem;
+  --radius-full: 9999px;
 
-  // Shadows
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
-
-  // Transitions
+  /* Transitions */
   --transition-fast: 150ms ease;
   --transition-base: 250ms ease;
   --transition-slow: 350ms ease;

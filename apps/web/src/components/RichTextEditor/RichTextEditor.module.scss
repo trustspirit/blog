@@ -9,15 +9,15 @@
   }
 
   :global(.ql-toolbar) {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    border: 1px solid #ddd;
+    border-top-left-radius: var(--radius-md);
+    border-top-right-radius: var(--radius-md);
+    border: 1px solid var(--border);
   }
 
   :global(.ql-container) {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    border: 1px solid #ddd;
+    border-bottom-left-radius: var(--radius-md);
+    border-bottom-right-radius: var(--radius-md);
+    border: 1px solid var(--border);
     border-top: none;
   }
 }

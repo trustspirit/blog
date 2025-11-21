@@ -47,8 +47,8 @@
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-xl);
   flex-wrap: wrap;
-  background-color: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: var(--spacing-lg);
 
@@ -70,7 +70,7 @@
   padding: 0.625rem 1.25rem;
   font-size: 0.9375rem;
   font-weight: 500;
-  color: #a3a3a3;
+  color: var(--text-tertiary);
   background-color: transparent;
   border: 1px solid transparent;
   border-radius: var(--radius-lg);
@@ -79,15 +79,15 @@
   white-space: nowrap;
 
   &:hover {
-    color: #e5e5e5;
-    background-color: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    background-color: var(--bg-tertiary);
+    border-color: var(--border);
   }
 
   &.active {
-    color: #ffffff;
-    background: rgba(0, 0, 0, 0.5);
-    border-color: rgba(255, 255, 255, 0.3);
+    color: var(--text-inverse);
+    background: var(--accent);
+    border-color: var(--accent-dark);
   }
 
   @media (max-width: 640px) {
@@ -113,19 +113,19 @@
   font-size: 0.9375rem;
   font-weight: 500;
   color: var(--text-primary);
-  background-color: rgba(255, 255, 255, 0.05);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23a3a3a3' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-color: var(--bg-primary);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2352616B' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1rem center;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   cursor: pointer;
   appearance: none;
   transition: all var(--transition-fast);
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.15);
+    background-color: var(--bg-secondary);
+    border-color: var(--accent);
   }
 
   &:focus {

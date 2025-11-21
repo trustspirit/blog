@@ -10,15 +10,15 @@
   transition: all var(--transition-base);
 
   &.scrolled {
-    background-color: rgba(10, 10, 10, 0.5);
+    background-color: var(--bg-overlay);
     backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--border-light);
 
     .navLink {
-      color: #ffffff;
+      color: var(--text-inverse);
 
       &:hover {
-        color: rgba(255, 255, 255, 0.8);
+        color: var(--bg-tertiary);
       }
     }
   }
@@ -53,14 +53,8 @@
   }
 }
 
-.logoIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .logoText {
-  color: #ffffff;
+  color: var(--text-inverse);
 
   @media (max-width: 480px) {
     display: none;
@@ -111,13 +105,13 @@
 .navLink {
   font-size: 0.9375rem;
   font-weight: 500;
-  color: #ffffff;
+  color: var(--text-inverse);
   text-decoration: none;
   transition: color var(--transition-fast);
   white-space: nowrap;
 
   &:hover {
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--bg-tertiary);
   }
 
   @media (max-width: 640px) {
@@ -129,17 +123,17 @@
   padding: 0.5rem 1.25rem;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #ffffff;
-  background-color: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--text-inverse);
+  background-color: var(--bg-overlay);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   text-decoration: none;
   white-space: nowrap;
   transition: all var(--transition-fast);
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.65);
-    border-color: rgba(255, 255, 255, 0.4);
+    background-color: var(--accent-dark);
+    border-color: var(--accent);
     transform: translateY(-1px);
   }
 

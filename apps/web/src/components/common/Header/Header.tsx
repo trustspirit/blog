@@ -23,36 +23,6 @@ export const Header: React.FC = () => {
     <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''}`}>
       <div className={styles.container}>
         <Link href="/" className={styles.logo}>
-          <div className={styles.logoIcon}>
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-              <rect width="32" height="32" rx="8" fill="url(#logo-gradient)" />
-              <text
-                x="50%"
-                y="50%"
-                dominantBaseline="middle"
-                textAnchor="middle"
-                fill="white"
-                fontSize="14"
-                fontWeight="bold"
-                fontFamily="Arial, sans-serif"
-              >
-                TJ
-              </text>
-              <defs>
-                <linearGradient
-                  id="logo-gradient"
-                  x1="0"
-                  y1="0"
-                  x2="32"
-                  y2="32"
-                  gradientUnits="userSpaceOnUse"
-                >
-                  <stop stopColor="#667eea" />
-                  <stop offset="1" stopColor="#764ba2" />
-                </linearGradient>
-              </defs>
-            </svg>
-          </div>
           <span className={styles.logoText}>TrustJ</span>
         </Link>
 

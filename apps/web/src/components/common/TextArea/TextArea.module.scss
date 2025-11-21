@@ -11,38 +11,40 @@
 .label {
   font-size: 14px;
   font-weight: 500;
-  color: #333;
+  color: var(--text-secondary);
 }
 
 .textarea {
   padding: 12px 16px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
   font-size: 16px;
   font-family: inherit;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   resize: vertical;
   min-height: 120px;
-  transition: border-color 0.2s ease;
+  transition: border-color var(--transition-base);
 
   &:focus {
     outline: none;
-    border-color: #000;
+    border-color: var(--text-primary);
   }
 
   &.error {
-    border-color: #e00;
+    border-color: var(--error);
   }
 
   &::placeholder {
-    color: #999;
+    color: var(--text-tertiary);
   }
 }
 
 .helperText {
   font-size: 12px;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .errorText {
-  color: #e00;
+  color: var(--error);
 }

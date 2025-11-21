@@ -12,41 +12,6 @@ export const Footer: React.FC = () => {
           {/* Logo and Mission */}
           <div className={styles.brand}>
             <Link href="/" className={styles.logo}>
-              <div className={styles.logoIcon}>
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                  <rect
-                    width="32"
-                    height="32"
-                    rx="8"
-                    fill="url(#footer-logo-gradient)"
-                  />
-                  <text
-                    x="50%"
-                    y="50%"
-                    dominantBaseline="middle"
-                    textAnchor="middle"
-                    fill="white"
-                    fontSize="14"
-                    fontWeight="bold"
-                    fontFamily="Arial, sans-serif"
-                  >
-                    TRUSTJ
-                  </text>
-                  <defs>
-                    <linearGradient
-                      id="footer-logo-gradient"
-                      x1="0"
-                      y1="0"
-                      x2="32"
-                      y2="32"
-                      gradientUnits="userSpaceOnUse"
-                    >
-                      <stop stopColor="#667eea" />
-                      <stop offset="1" stopColor="#764ba2" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-              </div>
               <span className={styles.logoText}>TrustJ</span>
             </Link>
             <p className={styles.mission}>
@@ -61,28 +26,7 @@ export const Footer: React.FC = () => {
               <h3 className={styles.linkTitle}>About</h3>
               <ul className={styles.linkList}>
                 <li>
-                  <Link href="/about">About Us</Link>
-                </li>
-                <li>
-                  <Link href="/posts">Blog</Link>
-                </li>
-                <li>
-                  <Link href="/admin/login">Career</Link>
-                </li>
-              </ul>
-            </div>
-
-            <div className={styles.linkGroup}>
-              <h3 className={styles.linkTitle}>Support</h3>
-              <ul className={styles.linkList}>
-                <li>
-                  <Link href="/contact">Contact Us</Link>
-                </li>
-                <li>
-                  <Link href="/return">Return</Link>
-                </li>
-                <li>
-                  <Link href="/faq">FAQ</Link>
+                  <Link href="/about">About Me</Link>
                 </li>
               </ul>
             </div>
