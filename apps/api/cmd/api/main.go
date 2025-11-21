@@ -69,6 +69,7 @@ func main() {
 	postsRoutes := router.Group("/posts")
 	{
 		postsRoutes.GET("", postsHandler.GetPosts)
+		postsRoutes.GET("/search", postsHandler.SearchPosts)
 		postsRoutes.GET("/:id", postsHandler.GetPost)
 		postsRoutes.GET("/admin/:id", middleware.AuthMiddleware(cfg), postsHandler.GetPostAdmin)
 		postsRoutes.POST("", middleware.AuthMiddleware(cfg), postsHandler.CreatePost)

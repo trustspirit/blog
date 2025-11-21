@@ -79,6 +79,57 @@ func (h *PostsHandler) GetPosts(c *gin.Context) {
 	})
 }
 
+func (h *PostsHandler) SearchPosts(c *gin.Context) {
+	ctx := context.Background()
+
+	// Get search query
+	query := c.Query("q")
+	if query == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Search query is required"})
+		return
+	}
+
+	// Parse pagination parameters
+	limit, _ := strconv.Atoi(c.DefaultQuery("limit", "10"))
+	if limit < 1 || limit > 100 {
+		limit = 10
+	}
+
+	// Build filter with case-insensitive regex search on title
+	filter := bson.M{
+		"published": true,
+		"title": bson.M{
+			"$regex":   query,
+			"$options": "i", // case-insensitive
+		},
+	}
+
+	// Query options - sort by relevance (could be enhanced) and creation date
+	opts := options.Find().
+		SetSort(bson.D{{Key: "createdAt", Value: -1}}).
+		SetLimit(int64(limit))
+
+	cursor, err := h.db.Posts().Find(ctx, filter, opts)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to search posts"})
+		return
+	}
+	defer cursor.Close(ctx)
+
+	var posts []models.Post
+	if err := cursor.All(ctx, &posts); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to decode posts"})
+		return
+	}
+
+	// Return empty array if no posts found
+	if posts == nil {
+		posts = []models.Post{}
+	}
+
+	c.JSON(http.StatusOK, posts)
+}
+
 func (h *PostsHandler) GetPost(c *gin.Context) {
 	ctx := context.Background()
 	id := c.Param("id")

@@ -1,11 +1,10 @@
 'use client'
 
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { BlogPost } from '@/lib/api'
-import { Button } from '../common/Button'
 import styles from './BlogCarousel.module.scss'
 
 interface BlogCarouselProps {
@@ -13,114 +12,167 @@ interface BlogCarouselProps {
 }
 
 export const BlogCarousel: React.FC<BlogCarouselProps> = ({ posts }) => {
-  const scrollContainerRef = useRef<HTMLDivElement>(null)
-  const [canScrollLeft, setCanScrollLeft] = useState(false)
-  const [canScrollRight, setCanScrollRight] = useState(true)
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
 
-  const checkScrollability = () => {
-    if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } =
-        scrollContainerRef.current
-      setCanScrollLeft(scrollLeft > 0)
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10)
-    }
+  const nextSlide = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % posts.length)
+  }, [posts.length])
+
+  const prevSlide = useCallback(() => {
+    setCurrentIndex((prev) => (prev - 1 + posts.length) % posts.length)
+  }, [posts.length])
+
+  const goToSlide = (index: number) => {
+    setCurrentIndex(index)
   }
 
+  // Auto-slide
   useEffect(() => {
-    checkScrollability()
-    const container = scrollContainerRef.current
-    if (container) {
-      container.addEventListener('scroll', checkScrollability)
-      window.addEventListener('resize', checkScrollability)
-      return () => {
-        container.removeEventListener('scroll', checkScrollability)
-        window.removeEventListener('resize', checkScrollability)
-      }
-    }
-  }, [posts])
+    if (isPaused || posts.length <= 1) return
 
-  const scroll = (direction: 'left' | 'right') => {
-    if (scrollContainerRef.current) {
-      const scrollAmount = scrollContainerRef.current.clientWidth * 0.8
-      const scrollTo =
-        direction === 'left'
-          ? scrollContainerRef.current.scrollLeft - scrollAmount
-          : scrollContainerRef.current.scrollLeft + scrollAmount
+    const interval = setInterval(nextSlide, 5000)
+    return () => clearInterval(interval)
+  }, [isPaused, nextSlide, posts.length])
 
-      scrollContainerRef.current.scrollTo({
-        left: scrollTo,
-        behavior: 'smooth',
-      })
-    }
+  if (posts.length === 0) {
+    return null
   }
+
+  const currentPost = posts[currentIndex]
 
   return (
-    <div className={styles.carouselContainer}>
-      {canScrollLeft && (
-        <button
-          className={styles.scrollButton}
-          onClick={() => scroll('left')}
-          aria-label="Scroll left"
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path d="M15 18l-6-6 6-6" />
-          </svg>
-        </button>
-      )}
-      <div ref={scrollContainerRef} className={styles.scrollContainer}>
-        {posts.map((post) => (
-          <Link
+    <div
+      className={styles.heroCarousel}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      <div className={styles.slideContainer}>
+        {posts.map((post, index) => (
+          <div
             key={post.id}
-            href={`/posts/${post.id}`}
-            className={styles.postCard}
+            className={`${styles.slide} ${
+              index === currentIndex ? styles.active : ''
+            }`}
           >
-            <div className={styles.imageContainer}>
-              {post.imageUrl ? (
-                <Image
-                  src={post.imageUrl}
-                  alt={post.title}
-                  fill
-                  className={styles.image}
-                  sizes="(max-width: 768px) 100vw, 400px"
-                />
-              ) : (
-                <div className={styles.placeholder}>No Image</div>
-              )}
-            </div>
-            <div className={styles.content}>
-              <h3 className={styles.title}>{post.title}</h3>
-              <p className={styles.date}>
-                {format(new Date(post.createdAt), 'MMM d, yyyy')}
-              </p>
-              <p className={styles.summary}>{post.summary}</p>
-            </div>
-          </Link>
+            {post.imageUrl ? (
+              <Image
+                src={post.imageUrl}
+                alt={post.title}
+                fill
+                className={styles.slideImage}
+                sizes="100vw"
+                priority={index === 0}
+              />
+            ) : (
+              <div className={styles.slidePlaceholder}>
+                <div className={styles.placeholderGradient} />
+              </div>
+            )}
+            <div className={styles.overlay} />
+          </div>
         ))}
       </div>
-      {canScrollRight && (
-        <button
-          className={styles.scrollButton}
-          onClick={() => scroll('right')}
-          aria-label="Scroll right"
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
+
+      <div className={styles.content}>
+        <div className={styles.contentWrapper}>
+          {currentPost.tags && currentPost.tags.length > 0 && (
+            <div className={styles.tags}>
+              {currentPost.tags.slice(0, 3).map((tag, index) => (
+                <span key={index} className={styles.tag}>
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+          <h1 className={styles.title}>{currentPost.title}</h1>
+          <p className={styles.summary}>{currentPost.summary}</p>
+
+          <div className={styles.meta}>
+            <div className={styles.author}>
+              <div className={styles.authorAvatar}>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                </svg>
+              </div>
+              <span>Blog Author</span>
+            </div>
+            <span className={styles.date}>
+              {format(new Date(currentPost.createdAt), 'dd MMM yyyy')}
+            </span>
+            <span className={styles.readTime}>• 10 mins read</span>
+          </div>
+
+          <Link href={`/posts/${currentPost.id}`} className={styles.readMore}>
+            Read Article
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </Link>
+        </div>
+      </div>
+
+      {posts.length > 1 && (
+        <>
+          <button
+            className={`${styles.navButton} ${styles.navButtonPrev}`}
+            onClick={prevSlide}
+            aria-label="Previous slide"
           >
-            <path d="M9 18l6-6-6-6" />
-          </svg>
-        </button>
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+
+          <button
+            className={`${styles.navButton} ${styles.navButtonNext}`}
+            onClick={nextSlide}
+            aria-label="Next slide"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </button>
+
+          <div className={styles.dotNavigation}>
+            {posts.map((_, index) => (
+              <button
+                key={index}
+                className={`${styles.dot} ${
+                  index === currentIndex ? styles.dotActive : ''
+                }`}
+                onClick={() => goToSlide(index)}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+        </>
       )}
     </div>
   )

@@ -64,6 +64,8 @@ export interface BlogPost {
   summary: string
   imageUrl: string
   published: boolean
+  tags: string[]
+  readingTime?: number // in minutes
   createdAt: string
   updatedAt: string
 }
@@ -74,6 +76,8 @@ export interface CreateBlogPostDto {
   summary: string
   imageUrl: string
   published: boolean
+  tags?: string[]
+  readingTime?: number
 }
 
 export interface UpdateBlogPostDto extends Partial<CreateBlogPostDto> {}
@@ -139,6 +143,16 @@ export const blogApi = {
     // Do not manually set Content-Type header
     const response = await api.post('/uploads/image', formData)
     return response.data.url
+  },
+
+  searchPosts: async (
+    query: string,
+    limit: number = 10,
+  ): Promise<BlogPost[]> => {
+    const response = await api.get('/posts/search', {
+      params: { q: query, limit },
+    })
+    return response.data
   },
 }
 

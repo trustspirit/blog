@@ -1,57 +1,68 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import Link from 'next/link'
 import { blogApi } from '@/lib/api'
+import { DUMMY_POSTS } from '@/lib/dummyData'
+import { Header } from '@/components/common/Header'
+import { Footer } from '@/components/common/Footer'
 import { BlogCarousel } from '@/components/BlogCarousel'
-import { Button } from '@/components/common/Button'
-import { ThemeToggle } from '@/components/ThemeToggle'
+import { BlogGrid } from '@/components/BlogGrid'
 import styles from './page.module.scss'
 
 export default function Home() {
-  const { data, isLoading } = useQuery({
-    queryKey: ['posts', 'recent'],
-    queryFn: () => blogApi.getPosts(1, 10, false),
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['posts', 'all'],
+    queryFn: () => blogApi.getPosts(1, 20, false),
+    retry: false, // Don't retry if API fails
   })
 
-  const posts = data?.posts || []
+  // Use dummy data if API fails or in development without DB
+  const useDummyData =
+    error || (!isLoading && (!data || data.posts.length === 0))
+  const posts = useDummyData ? DUMMY_POSTS : data?.posts || []
+
+  const featuredPosts = posts.slice(0, 5)
+  const gridPosts = posts
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <h1 className={styles.title}>My Blog</h1>
-        <nav className={styles.nav}>
-          <Link href="/posts" className={styles.navLink}>
-            All Posts
-          </Link>
-          <Link href="/about" className={styles.navLink}>
-            About
-          </Link>
-          <Link href="/admin/login" className={styles.navLink}>
-            Admin
-          </Link>
-          <ThemeToggle />
-        </nav>
-      </header>
+      <Header />
 
-      <main className={styles.main}>
-        <section className={styles.hero}>
-          <h2 className={styles.heroTitle}>Latest Posts</h2>
-          {isLoading ? (
-            <div className={styles.loading}>Loading...</div>
-          ) : posts.length > 0 ? (
-            <BlogCarousel posts={posts} />
-          ) : (
-            <div className={styles.empty}>No posts yet</div>
-          )}
-        </section>
-
-        <div className={styles.actions}>
-          <Link href="/posts">
-            <Button size="large">View All Posts</Button>
-          </Link>
+      {isLoading ? (
+        <div className={styles.loading}>
+          <div className={styles.spinner} />
+          <p>Loading amazing content...</p>
         </div>
-      </main>
+      ) : (
+        <>
+          {useDummyData && (
+            <div className={styles.demoNotice}>
+              <p>
+                📝 Showing demo content - Connect to database to see real posts
+              </p>
+            </div>
+          )}
+
+          {featuredPosts.length > 0 && (
+            <section className={styles.heroSection}>
+              <BlogCarousel posts={featuredPosts} />
+            </section>
+          )}
+
+          {gridPosts.length > 0 && <BlogGrid posts={gridPosts} />}
+
+          {posts.length === 0 && (
+            <div className={styles.empty}>
+              <div className={styles.emptyContent}>
+                <h2>No Posts Yet</h2>
+                <p>Check back soon for exciting travel stories and guides!</p>
+              </div>
+            </div>
+          )}
+        </>
+      )}
+
+      <Footer />
     </div>
   )
 }
