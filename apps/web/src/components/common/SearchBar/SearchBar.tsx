@@ -8,7 +8,11 @@ import { blogApi, BlogPost } from '@/lib/api'
 import { searchDummyPosts } from '@/lib/dummyData'
 import styles from './SearchBar.module.scss'
 
-export const SearchBar: React.FC = () => {
+interface SearchBarProps {
+  isScrolled?: boolean
+}
+
+export const SearchBar: React.FC<SearchBarProps> = ({ isScrolled = false }) => {
   const [query, setQuery] = useState('')
   const [isOpen, setIsOpen] = useState(false)
   const [selectedIndex, setSelectedIndex] = useState(-1)
@@ -85,7 +89,12 @@ export const SearchBar: React.FC = () => {
   }
 
   return (
-    <div ref={searchRef} className={styles.searchContainer}>
+    <div
+      ref={searchRef}
+      className={`${styles.searchContainer} ${
+        !isScrolled ? styles.transparent : ''
+      }`}
+    >
       <div className={styles.searchInputWrapper}>
         <svg
           className={styles.searchIcon}
@@ -116,7 +125,7 @@ export const SearchBar: React.FC = () => {
         )}
       </div>
 
-      {isOpen && query && (
+      {isOpen && query && (results.length > 0 || !isFetching) && (
         <div className={styles.searchResults}>
           {results.length > 0 ? (
             <>
@@ -139,11 +148,9 @@ export const SearchBar: React.FC = () => {
               ))}
             </>
           ) : (
-            !isFetching && (
-              <div className={styles.noResults}>
-                <p>No posts found for "{query}"</p>
-              </div>
-            )
+            <div className={styles.noResults}>
+              <p>No posts found for "{query}"</p>
+            </div>
           )}
         </div>
       )}

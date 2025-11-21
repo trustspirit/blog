@@ -1,5 +1,14 @@
 import { BlogPost } from './api'
 
+// Calculate reading time based on content length
+// Average reading speed: ~200 words per minute
+export const calculateReadingTime = (content: string): number => {
+  const wordsPerMinute = 200
+  const words = content.trim().split(/\s+/).length
+  const readingTime = Math.ceil(words / wordsPerMinute)
+  return Math.max(1, readingTime) // Minimum 1 minute
+}
+
 // Dummy blog posts for development testing
 export const DUMMY_POSTS: BlogPost[] = [
   {
@@ -12,6 +21,7 @@ export const DUMMY_POSTS: BlogPost[] = [
       'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&h=800&fit=crop',
     published: true,
     tags: ['Destination', 'Adventure', 'Hiking'],
+    readingTime: 5,
     createdAt: '2024-01-24T10:00:00Z',
     updatedAt: '2024-01-24T10:00:00Z',
   },
@@ -25,6 +35,7 @@ export const DUMMY_POSTS: BlogPost[] = [
       'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1200&h=800&fit=crop',
     published: true,
     tags: ['Culinary', 'Food', 'Culture'],
+    readingTime: 7,
     createdAt: '2024-01-23T10:00:00Z',
     updatedAt: '2024-01-23T10:00:00Z',
   },
@@ -38,6 +49,7 @@ export const DUMMY_POSTS: BlogPost[] = [
       'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&h=800&fit=crop',
     published: true,
     tags: ['Lifestyle', 'Tips & Hacks', 'Minimalism'],
+    readingTime: 6,
     createdAt: '2024-01-22T10:00:00Z',
     updatedAt: '2024-01-22T10:00:00Z',
   },
@@ -51,6 +63,7 @@ export const DUMMY_POSTS: BlogPost[] = [
       'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1200&h=800&fit=crop',
     published: true,
     tags: ['Destination', 'Beach', 'Asia'],
+    readingTime: 8,
     createdAt: '2024-01-21T10:00:00Z',
     updatedAt: '2024-01-21T10:00:00Z',
   },
@@ -64,6 +77,7 @@ export const DUMMY_POSTS: BlogPost[] = [
       'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=1200&h=800&fit=crop',
     published: true,
     tags: ['Tips & Hacks', 'Budget', 'Europe'],
+    readingTime: 10,
     createdAt: '2024-01-20T10:00:00Z',
     updatedAt: '2024-01-20T10:00:00Z',
   },
@@ -77,6 +91,7 @@ export const DUMMY_POSTS: BlogPost[] = [
       'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=1200&h=800&fit=crop',
     published: true,
     tags: ['Culinary', 'Japan', 'Food'],
+    readingTime: 12,
     createdAt: '2024-01-19T10:00:00Z',
     updatedAt: '2024-01-19T10:00:00Z',
   },
@@ -90,6 +105,7 @@ export const DUMMY_POSTS: BlogPost[] = [
       'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1200&h=800&fit=crop',
     published: true,
     tags: ['Lifestyle', 'Digital Nomad', 'Bali'],
+    readingTime: 9,
     createdAt: '2024-01-18T10:00:00Z',
     updatedAt: '2024-01-18T10:00:00Z',
   },
@@ -103,6 +119,7 @@ export const DUMMY_POSTS: BlogPost[] = [
       'https://images.unsplash.com/photo-1504829857797-ddff29c27927?w=1200&h=800&fit=crop',
     published: true,
     tags: ['Destination', 'Photography', 'Iceland'],
+    readingTime: 7,
     createdAt: '2024-01-17T10:00:00Z',
     updatedAt: '2024-01-17T10:00:00Z',
   },
@@ -116,6 +133,7 @@ export const DUMMY_POSTS: BlogPost[] = [
       'https://images.unsplash.com/photo-1555217851-6141535bd771?w=1200&h=800&fit=crop',
     published: true,
     tags: ['Culture', 'Shopping', 'Local'],
+    readingTime: 6,
     createdAt: '2024-01-16T10:00:00Z',
     updatedAt: '2024-01-16T10:00:00Z',
   },
@@ -129,6 +147,7 @@ export const DUMMY_POSTS: BlogPost[] = [
       'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1200&h=800&fit=crop',
     published: true,
     tags: ['Lifestyle', 'Sustainability', 'Eco-Travel'],
+    readingTime: 8,
     createdAt: '2024-01-15T10:00:00Z',
     updatedAt: '2024-01-15T10:00:00Z',
   },
@@ -142,6 +161,7 @@ export const DUMMY_POSTS: BlogPost[] = [
       'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=1200&h=800&fit=crop',
     published: true,
     tags: ['Culinary', 'Wine', 'Italy'],
+    readingTime: 11,
     createdAt: '2024-01-14T10:00:00Z',
     updatedAt: '2024-01-14T10:00:00Z',
   },
@@ -155,6 +175,7 @@ export const DUMMY_POSTS: BlogPost[] = [
       'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1200&h=800&fit=crop',
     published: true,
     tags: ['Tips & Hacks', 'Solo Travel', 'Safety'],
+    readingTime: 5,
     createdAt: '2024-01-13T10:00:00Z',
     updatedAt: '2024-01-13T10:00:00Z',
   },

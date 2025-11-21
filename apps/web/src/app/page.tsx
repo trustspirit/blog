@@ -35,14 +35,6 @@ export default function Home() {
         </div>
       ) : (
         <>
-          {useDummyData && (
-            <div className={styles.demoNotice}>
-              <p>
-                📝 Showing demo content - Connect to database to see real posts
-              </p>
-            </div>
-          )}
-
           {featuredPosts.length > 0 && (
             <section className={styles.heroSection}>
               <BlogCarousel posts={featuredPosts} />

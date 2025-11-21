@@ -20,11 +20,18 @@ export const Footer: React.FC = () => {
                     rx="8"
                     fill="url(#footer-logo-gradient)"
                   />
-                  <path
-                    d="M16 8L20 16L16 24L12 16L16 8Z"
+                  <text
+                    x="50%"
+                    y="50%"
+                    dominantBaseline="middle"
+                    textAnchor="middle"
                     fill="white"
-                    opacity="0.9"
-                  />
+                    fontSize="14"
+                    fontWeight="bold"
+                    fontFamily="Arial, sans-serif"
+                  >
+                    TRUSTJ
+                  </text>
                   <defs>
                     <linearGradient
                       id="footer-logo-gradient"
@@ -40,7 +47,7 @@ export const Footer: React.FC = () => {
                   </defs>
                 </svg>
               </div>
-              <span className={styles.logoText}>Horizone</span>
+              <span className={styles.logoText}>TrustJ</span>
             </Link>
             <p className={styles.mission}>
               Our mission is to equip modern explorers with cutting-edge,
@@ -123,7 +130,7 @@ export const Footer: React.FC = () => {
         {/* Bottom Bar */}
         <div className={styles.bottom}>
           <p className={styles.copyright}>
-            ©2024 Horizone. All rights reserved.
+            ©2024 TrustJ. All rights reserved.
           </p>
           <div className={styles.legal}>
             <Link href="/privacy">Privacy Policy</Link>

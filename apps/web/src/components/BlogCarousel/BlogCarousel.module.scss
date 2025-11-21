@@ -4,8 +4,8 @@
   height: 600px;
   overflow: hidden;
   background-color: rgba(255, 255, 255, 0.03);
-  border-radius: var(--radius-xl);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  border: none;
 
   @media (max-width: 1024px) {
     height: 500px;
@@ -13,7 +13,6 @@
 
   @media (max-width: 768px) {
     height: 400px;
-    border-radius: var(--radius-lg);
   }
 }
 
@@ -97,9 +96,9 @@
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
   font-weight: 600;
-  color: rgba(91, 108, 242, 0.95);
-  background-color: rgba(91, 108, 242, 0.2);
-  border: 1px solid rgba(91, 108, 242, 0.4);
+  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: var(--radius-lg);
   text-transform: capitalize;
   backdrop-filter: blur(4px);
@@ -110,6 +109,7 @@
   font-weight: 700;
   line-height: 1.2;
   margin: 0 0 var(--spacing-md);
+  color: #ffffff;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 
   @media (max-width: 1024px) {
@@ -125,6 +125,7 @@
   font-size: 1.125rem;
   line-height: 1.6;
   margin: 0 0 var(--spacing-lg);
+  color: #e5e5e5;
   opacity: 0.95;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   max-width: 700px;

@@ -6,18 +6,38 @@ import { SearchBar } from '../SearchBar'
 import styles from './Header.module.scss'
 
 export const Header: React.FC = () => {
+  const [isScrolled, setIsScrolled] = React.useState(false)
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    handleScroll() // Check initial state
+
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header} ${isScrolled ? styles.scrolled : ''}`}>
       <div className={styles.container}>
         <Link href="/" className={styles.logo}>
           <div className={styles.logoIcon}>
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
               <rect width="32" height="32" rx="8" fill="url(#logo-gradient)" />
-              <path
-                d="M16 8L20 16L16 24L12 16L16 8Z"
+              <text
+                x="50%"
+                y="50%"
+                dominantBaseline="middle"
+                textAnchor="middle"
                 fill="white"
-                opacity="0.9"
-              />
+                fontSize="14"
+                fontWeight="bold"
+                fontFamily="Arial, sans-serif"
+              >
+                TJ
+              </text>
               <defs>
                 <linearGradient
                   id="logo-gradient"
@@ -33,12 +53,12 @@ export const Header: React.FC = () => {
               </defs>
             </svg>
           </div>
-          <span className={styles.logoText}>Horizone</span>
+          <span className={styles.logoText}>TrustJ</span>
         </Link>
 
         <nav className={styles.nav}>
           <div className={styles.searchWrapper}>
-            <SearchBar />
+            <SearchBar isScrolled={isScrolled} />
           </div>
 
           <div className={styles.navLinks}>

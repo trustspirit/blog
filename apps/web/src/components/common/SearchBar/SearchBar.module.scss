@@ -2,6 +2,27 @@
   position: relative;
   width: 100%;
   max-width: 500px;
+
+  &.transparent {
+    .searchInput {
+      background-color: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      &:focus {
+        background-color: rgba(255, 255, 255, 0.25);
+        border-color: #ffffff;
+      }
+    }
+
+    .searchIcon {
+      color: #ffffff;
+    }
+  }
 }
 
 .searchInputWrapper {
@@ -16,7 +37,7 @@
   left: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: #737373;
+  color: #ffffff;
   pointer-events: none;
   z-index: 1;
 }
@@ -25,7 +46,7 @@
   width: 100%;
   padding: 0.625rem 3rem 0.625rem 3rem;
   font-size: 0.9375rem;
-  color: var(--text-primary);
+  color: #ffffff;
   background-color: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-lg);
@@ -33,13 +54,13 @@
   transition: all var(--transition-fast);
 
   &::placeholder {
-    color: #737373;
+    color: rgba(255, 255, 255, 0.8);
   }
 
   &:focus {
     background-color: rgba(255, 255, 255, 0.08);
-    border-color: rgba(91, 108, 242, 0.5);
-    box-shadow: 0 0 0 3px rgba(91, 108, 242, 0.15);
+    border-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
   }
 }
 
@@ -73,8 +94,8 @@
   right: 0;
   max-height: 400px;
   overflow-y: auto;
-  background-color: rgba(26, 26, 26, 0.98);
-  backdrop-filter: blur(12px);
+  background-color: rgba(10, 10, 10, 0.6);
+  backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-lg);
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
@@ -126,14 +147,14 @@
 .resultTitle {
   font-size: 0.9375rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #ffffff;
   margin: 0;
   line-height: 1.4;
 }
 
 .resultSummary {
   font-size: 0.8125rem;
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.7);
   margin: 0;
   line-height: 1.4;
   display: -webkit-box;
@@ -146,7 +167,7 @@
 .noResults {
   padding: 2rem 1rem;
   text-align: center;
-  color: var(--text-tertiary);
+  color: rgba(255, 255, 255, 0.6);
 
   p {
     margin: 0;

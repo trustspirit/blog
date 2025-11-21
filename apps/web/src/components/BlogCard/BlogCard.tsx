@@ -48,7 +48,11 @@ export const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
           <span className={styles.date}>
             {format(new Date(post.createdAt), 'MMM dd, yyyy')}
           </span>
-          <span className={styles.readTime}>• 10 min read</span>
+          {post.readingTime && (
+            <span className={styles.readTime}>
+              • {post.readingTime} min read
+            </span>
+          )}
         </div>
       </div>
     </Link>
