@@ -1,10 +1,10 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useQuery } from '@tanstack/react-query'
-import { blogApi, BlogPost } from '@/lib/api'
+import { blogApi } from '@/lib/api'
+import { postQueries } from '@/lib/queries'
 import { searchDummyPosts } from '@/lib/dummyData'
 import styles from './SearchBar.module.scss'
 
@@ -21,7 +21,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ isScrolled = false }) => {
   const router = useRouter()
 
   const { data: results = [], isFetching } = useQuery({
-    queryKey: ['search', query],
+    queryKey: postQueries.search(query, 5).queryKey,
     queryFn: async () => {
       try {
         return await blogApi.searchPosts(query, 5)

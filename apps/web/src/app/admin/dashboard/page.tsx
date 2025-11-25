@@ -6,7 +6,8 @@ import { useAtomValue } from 'jotai'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import { userAtom } from '@/store/auth'
-import { blogApi, authApi, BlogPost } from '@/lib/api'
+import { authApi, BlogPost } from '@/lib/api'
+import { postQueries } from '@/lib/queries'
 import { Button } from '@/components/common/Button'
 import styles from './page.module.scss'
 
@@ -15,8 +16,7 @@ export default function AdminDashboard() {
   const user = useAtomValue(userAtom)
 
   const { data: postsData } = useQuery({
-    queryKey: ['posts', 'admin'],
-    queryFn: () => blogApi.getPosts(1, 100, true),
+    ...postQueries.all(1, 100, true),
     enabled: !!user,
   })
 

@@ -5,7 +5,8 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
 import { format } from 'date-fns'
-import { blogApi, BlogPost } from '@/lib/api'
+import { blogApi } from '@/lib/api'
+import { postQueries } from '@/lib/queries'
 import styles from './page.module.scss'
 
 export default function PostsPage() {
@@ -13,7 +14,7 @@ export default function PostsPage() {
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
-      queryKey: ['posts', 'all'],
+      queryKey: postQueries.all(1, 10, false).queryKey,
       queryFn: ({ pageParam = 1 }) => blogApi.getPosts(pageParam, 10, false),
       getNextPageParam: (lastPage) => {
         if (lastPage.hasMore) {
@@ -22,6 +23,7 @@ export default function PostsPage() {
         return undefined
       },
       initialPageParam: 1,
+      staleTime: 60 * 1000,
     })
 
   // Use useMemo to avoid recalculating on every render

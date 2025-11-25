@@ -7,6 +7,7 @@ import { useAtomValue } from 'jotai'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { userAtom } from '@/store/auth'
 import { blogApi, CreateBlogPostDto, UpdateBlogPostDto } from '@/lib/api'
+import { postQueries, queryKeys } from '@/lib/queries'
 import { Button } from '@/components/common/Button'
 import { TextField } from '@/components/common/TextField'
 import { TextArea } from '@/components/common/TextArea'
@@ -30,8 +31,7 @@ export default function EditPostPage() {
   })
 
   const { data: post, isLoading } = useQuery({
-    queryKey: ['post', 'admin', id],
-    queryFn: () => blogApi.getPostForAdmin(id),
+    ...postQueries.admin(id),
     enabled: !isNew && !!id,
   })
 
@@ -61,7 +61,7 @@ export default function EditPostPage() {
       return blogApi.updatePost(id, data)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['posts'] })
+      queryClient.invalidateQueries({ queryKey: queryKeys.posts.all })
       router.push('/admin/dashboard')
     },
   })

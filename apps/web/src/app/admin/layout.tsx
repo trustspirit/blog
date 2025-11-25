@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useQuery } from '@tanstack/react-query'
 import { userAtom } from '@/store/auth'
-import { authApi } from '@/lib/api'
+import { authQueries } from '@/lib/queries'
 
 export default function AdminLayout({
   children,
@@ -19,13 +19,11 @@ export default function AdminLayout({
   const isLoginPage = pathname === '/admin/login'
 
   const { data: meData } = useQuery({
-    queryKey: ['auth', 'me'],
-    queryFn: authApi.getMe,
+    ...authQueries.me(),
     enabled:
       !isLoginPage &&
       typeof window !== 'undefined' &&
       !!localStorage.getItem('accessToken'),
-    retry: false,
   })
 
   useEffect(() => {

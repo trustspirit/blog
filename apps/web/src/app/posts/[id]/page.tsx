@@ -1,81 +1,68 @@
-'use client'
+import { Metadata } from 'next'
+import { dehydrate } from '@tanstack/react-query'
+import { notFound } from 'next/navigation'
+import { getQueryClient } from '@/lib/get-query-client'
+import { postQueries } from '@/lib/queries'
+import { PostContent } from '@/components/PostContent'
 
-import { useQuery } from '@tanstack/react-query'
-import { useParams } from 'next/navigation'
-import Image from 'next/image'
-import Link from 'next/link'
-import { format } from 'date-fns'
-import { useMemo } from 'react'
-import { blogApi } from '@/lib/api'
-import { embedYouTubeVideos } from '@/lib/youtube'
-import styles from './page.module.scss'
+interface PageProps {
+  params: {
+    id: string
+  }
+}
 
-export default function PostPage() {
-  const params = useParams()
-  const id = params.id as string
+// Generate metadata for SEO and social sharing
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const queryClient = getQueryClient()
 
-  const { data: post, isLoading } = useQuery({
-    queryKey: ['post', id],
-    queryFn: () => blogApi.getPost(id),
-    enabled: !!id,
-  })
+  try {
+    // Fetch post for metadata
+    const post = await queryClient.fetchQuery(postQueries.detail(params.id))
 
-  // Use useMemo to avoid recalculating on every render
-  const processedContent = useMemo(() => {
-    if (!post?.content) return ''
-    return embedYouTubeVideos(post.content)
-  }, [post?.content])
+    return {
+      title: `${post.title} | Personal Blog`,
+      description: post.summary,
+      openGraph: {
+        title: post.title,
+        description: post.summary,
+        images: post.imageUrl ? [post.imageUrl] : [],
+        type: 'article',
+        publishedTime: post.createdAt,
+        modifiedTime: post.updatedAt,
+        tags: post.tags,
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: post.title,
+        description: post.summary,
+        images: post.imageUrl ? [post.imageUrl] : [],
+      },
+    }
+  } catch (error) {
+    return {
+      title: 'Post Not Found | Personal Blog',
+    }
+  }
+}
 
-  if (isLoading) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.loading}>Loading post...</div>
-      </div>
-    )
+// ISR: Revalidate every 60 seconds
+export const revalidate = 60
+
+// Server Component - prefetch data on the server
+export default async function PostPage({ params }: PageProps) {
+  const queryClient = getQueryClient()
+
+  // Prefetch post data
+  try {
+    await queryClient.prefetchQuery(postQueries.detail(params.id))
+  } catch (error) {
+    // If post doesn't exist, show 404
+    notFound()
   }
 
-  if (!post) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.notFound}>Post not found</div>
-      </div>
-    )
-  }
+  const dehydratedState = dehydrate(queryClient)
 
-  return (
-    <div className={styles.container}>
-      <header className={styles.header}>
-        <Link href="/posts" className={styles.backLink}>
-          ← Back to Posts
-        </Link>
-      </header>
-
-      <article className={styles.article}>
-        {post.imageUrl && (
-          <div className={styles.imageContainer}>
-            <Image
-              src={post.imageUrl}
-              alt={post.title}
-              fill
-              className={styles.image}
-              sizes="100vw"
-              priority
-            />
-          </div>
-        )}
-        <div className={styles.content}>
-          <h1 className={styles.title}>{post.title}</h1>
-          <p className={styles.date}>
-            {format(new Date(post.createdAt), 'MMMM d, yyyy')}
-          </p>
-          <div
-            className={styles.body}
-            dangerouslySetInnerHTML={{
-              __html: processedContent,
-            }}
-          />
-        </div>
-      </article>
-    </div>
-  )
+  return <PostContent dehydratedState={dehydratedState} />
 }

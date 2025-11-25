@@ -1,41 +1,30 @@
-'use client'
+import { Metadata } from 'next'
+import { dehydrate } from '@tanstack/react-query'
+import { getQueryClient } from '@/lib/get-query-client'
+import { aboutQueries } from '@/lib/queries'
+import { AboutContent } from '@/components/AboutContent'
 
-import { useQuery } from '@tanstack/react-query'
-import Link from 'next/link'
-import { blogApi } from '@/lib/api'
-import styles from './page.module.scss'
+export const metadata: Metadata = {
+  title: 'About | Personal Blog',
+  description: 'Learn more about this blog and its author.',
+}
 
-export default function AboutPage() {
-  const { data: about, isLoading } = useQuery({
-    queryKey: ['about'],
-    queryFn: () => blogApi.getAbout(),
-  })
+// ISR: Revalidate every 60 seconds
+export const revalidate = 60
 
-  if (isLoading) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.loading}>Loading...</div>
-      </div>
-    )
+// Server Component - prefetch data on the server
+export default async function AboutPage() {
+  const queryClient = getQueryClient()
+
+  // Prefetch about data
+  try {
+    await queryClient.prefetchQuery(aboutQueries.all())
+  } catch (error) {
+    // If prefetch fails, client will handle fallback
+    console.error('Failed to prefetch about content:', error)
   }
 
-  return (
-    <div className={styles.container}>
-      <header className={styles.header}>
-        <Link href="/" className={styles.backLink}>
-          ← Back to Home
-        </Link>
-        <h1 className={styles.title}>About</h1>
-      </header>
+  const dehydratedState = dehydrate(queryClient)
 
-      <main className={styles.main}>
-        <div
-          className={styles.content}
-          dangerouslySetInnerHTML={{
-            __html: about?.content || '<p>No information available.</p>',
-          }}
-        />
-      </main>
-    </div>
-  )
+  return <AboutContent dehydratedState={dehydratedState} />
 }

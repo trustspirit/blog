@@ -7,6 +7,7 @@ import { useAtomValue } from 'jotai'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { userAtom } from '@/store/auth'
 import { blogApi } from '@/lib/api'
+import { aboutQueries, queryKeys } from '@/lib/queries'
 import { Button } from '@/components/common/Button'
 import { RichTextEditor } from '@/components/RichTextEditor'
 import styles from './page.module.scss'
@@ -17,10 +18,7 @@ export default function EditAboutPage() {
   const queryClient = useQueryClient()
   const [content, setContent] = useState('')
 
-  const { data: about, isLoading } = useQuery({
-    queryKey: ['about'],
-    queryFn: () => blogApi.getAbout(),
-  })
+  const { data: about, isLoading } = useQuery(aboutQueries.all())
 
   useEffect(() => {
     if (!user) {
@@ -37,7 +35,7 @@ export default function EditAboutPage() {
   const updateMutation = useMutation({
     mutationFn: (newContent: string) => blogApi.updateAbout(newContent),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['about'] })
+      queryClient.invalidateQueries({ queryKey: queryKeys.about.all })
       router.push('/admin/dashboard')
     },
   })

@@ -88,12 +88,20 @@ export interface AboutInfo {
   updatedAt: string
 }
 
+export interface PostsResponse {
+  posts: BlogPost[]
+  page: number
+  limit: number
+  total: number
+  hasMore: boolean
+}
+
 export const blogApi = {
   getPosts: async (
     page: number = 1,
     limit: number = 10,
     includeDrafts: boolean = false,
-  ) => {
+  ): Promise<PostsResponse> => {
     const response = await api.get('/posts', {
       params: { page, limit, includeDrafts },
     })
