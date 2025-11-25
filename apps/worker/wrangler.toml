@@ -1,0 +1,10 @@
+name = "blog-api-worker"
+main = "src/index.ts"
+compatibility_date = "2024-11-01"
+
+[env.production]
+name = "blog-api-worker"
+
+[vars]
+# Environment variables will be set via wrangler secret put
+
