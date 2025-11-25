@@ -35,33 +35,35 @@ export function HomeContent({ dehydratedState }: HomeContentProps) {
     <div className={styles.container}>
       <Header />
 
-      {isLoading ? (
-        <div className={styles.loading}>
-          <div className={styles.spinner} />
-          <p>Loading amazing content...</p>
-        </div>
-      ) : (
-        <>
-          {featuredPosts.length > 0 && (
-            <section className={styles.heroSection}>
-              <BlogCarousel posts={featuredPosts} />
-            </section>
-          )}
+      <main className={styles.mainContent}>
+        {isLoading ? (
+          <div className={styles.loading}>
+            <div className={styles.spinner} />
+            <p>Loading amazing content...</p>
+          </div>
+        ) : (
+          <>
+            {featuredPosts.length > 0 && (
+              <section className={styles.heroSection}>
+                <BlogCarousel posts={featuredPosts} />
+              </section>
+            )}
 
-          {gridPosts.length > 0 && <BlogGrid posts={gridPosts} />}
+            {gridPosts.length > 0 && <BlogGrid posts={gridPosts} />}
 
-          {posts.length === 0 && (
-            <div className={styles.empty}>
-              <div className={styles.emptyContent}>
-                <h2>No Posts Yet</h2>
-                <p>Check back soon for exciting travel stories and guides!</p>
+            {posts.length === 0 && (
+              <div className={styles.empty}>
+                <div className={styles.emptyContent}>
+                  <h2>No Posts Yet</h2>
+                  <p>Check back soon for exciting travel stories and guides!</p>
+                </div>
               </div>
-            </div>
-          )}
-        </>
-      )}
+            )}
+          </>
+        )}
+      </main>
 
-      <Footer />
+      {!isLoading && <Footer />}
     </div>
   )
 
